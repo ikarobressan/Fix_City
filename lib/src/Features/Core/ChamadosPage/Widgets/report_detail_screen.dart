@@ -1,0 +1,427 @@
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/full_screen_image.dart';
+import '../../../../Constants/colors.dart';
+import '../../../../Controller/theme_controller.dart';
+import '../Controller/chamados_controller.dart';
+import '../model/chamados_model.dart';
+import 'full_screen_video_player.dart';
+import 'video_player.dart';
+
+class ReportDetailScreen extends StatefulWidget {
+  const ReportDetailScreen({super.key, required this.reportingModel});
+  final ReportingModel reportingModel;
+
+  @override
+  State<ReportDetailScreen> createState() => _ReportDetailScreenState();
+}
+
+class _ReportDetailScreenState extends State<ReportDetailScreen> {
+  // Inicializar o controlador
+  final ReportController reportController = Get.find();
+
+  final String emptyVideo = 'vídeo não disponivel';
+
+// Criar uma lista para armazenar as URLs das imagens
+  String? imageUrls;
+  String? videoUrls;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Chamar o método para obter as URLs das imagens quando a tela é inicializada
+    _loadImages();
+  }
+
+  void _loadImages() async {
+    imageUrls = await reportController.getChamadoImage(
+      widget.reportingModel.chamadoId,
+      widget.reportingModel.userId,
+    );
+    log('Imagens recuperadas: $imageUrls');
+    videoUrls = await reportController.getChamadoVideo(
+      widget.reportingModel.chamadoId,
+      widget.reportingModel.userId,
+    );
+    log('Videos recuperados: $videoUrls');
+    // Atualizar o estado para refletir as mudanças
+    setState(() {});
+  }
+
+  Future<bool> safeBack() async {
+    if (Get.currentRoute != '/') {
+      // Verifica se a tela atual não é a tela inicial
+      Get.back();
+    }
+    // Indica que o evento "voltar" foi tratado e evita que o aplicativo feche.
+    return Future.value(false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeController themeController = Get.find();
+    log('Imagens recuperadas: $imageUrls');
+    final isDark = themeController.isDarkMode.value;
+
+    return WillPopScope(
+      onWillPop: safeBack,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "Detalhes do Chamado",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.displayLarge,
+          ),
+          centerTitle: true,
+          backgroundColor: isDark ? tDarkColor : whiteColor,
+          elevation: 2,
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Data do Chamado
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Data do Chamado:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.formattedDate,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                // Endereço
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Endereço:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.address,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                // Número do Endereço
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Número do Endereço:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.addressNumber,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                // CEP
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "CEP:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.cep,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                // Ponto de Referência
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Ponto de Referência:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.referPoint,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                // Descrição
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Descrição:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.description,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                // Categoria
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Categoria:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      // color: isDark ? blackContainer : whiteContainer,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.category.categoryDescription,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                if (widget.reportingModel.category.categoryDescription ==
+                    'Outro') ...[
+                  const Gap(12),
+                  // Categoria Definida
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Descrição da Categoria:",
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
+                        ],
+                      ),
+                      const Gap(6),
+                      Container(
+                        padding: const EdgeInsets.all(8.0),
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: isDark ? blackContainer : whiteContainer,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          widget.reportingModel.definicaoCategoria,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+                const Gap(12),
+                // Status da Chamado
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Status do Chamado:",
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(6),
+                    Container(
+                      padding: const EdgeInsets.all(8.0),
+                      // color: isDark ? blackContainer : whiteContainer,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: isDark ? blackContainer : whiteContainer,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        widget.reportingModel.statusMessage,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                    ),
+                  ],
+                ),
+                const Gap(12),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Imagem/Vídeo do Chamado:',
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                    const Gap(10),
+                    Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: videoUrls != emptyVideo
+                              ? MainAxisAlignment.spaceAround
+                              : MainAxisAlignment.center,
+                          children: [
+                            if (imageUrls != null && imageUrls!.isNotEmpty)
+                              Expanded(
+                                child: Center(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.to(
+                                        () => FullScreenImage(
+                                          imageUrl: imageUrls!,
+                                        ),
+                                      );
+                                    },
+                                    child: Image.network(
+                                      imageUrls!,
+                                      fit: BoxFit.cover,
+                                      // Altura da imagem
+                                      height: 300,
+                                      // Largura da imagem
+                                      width: 150,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Center(
+                                          child: Text(
+                                            'Erro ao carregar a imagem.',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            if (videoUrls != emptyVideo)
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.to(
+                                      () => FullScreenVideoPlayer(
+                                        videoUrl: videoUrls!,
+                                      ),
+                                    );
+                                  },
+                                  child: VideoPlayerWidget(
+                                    videoUrl: videoUrls ?? '',
+                                    height: 300,
+                                    width: 150,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

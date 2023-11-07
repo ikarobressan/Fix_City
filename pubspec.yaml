@@ -1,0 +1,65 @@
+name: the_safe_city
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.3 <4.0.0'
+
+dependencies:
+  flutter: # SDK do Flutter, necessário para qualquer aplicativo Flutter.
+    sdk: flutter
+  cupertino_icons: ^1.0.2 # Ícones no estilo iOS para Flutter.
+  firebase_core: ^2.17.0 # Núcleo do Firebase, necessário para usar qualquer recurso do Firebase.
+  firebase_auth: ^4.10.1 # Autenticação de usuários usando Firebase.
+  cloud_firestore: ^4.9.3 # Banco de dados NoSQL em tempo real do Firebase.
+  get: ^4.6.6 # Biblioteca para gerenciamento de estado, navegação e injeção de dependências no Flutter.
+  gap: ^3.0.1 # Widget para adicionar espaçamento entre outros widgets.
+  google_fonts: ^6.1.0 # Acesso a uma ampla variedade de fontes do Google Fonts.
+  intl: ^0.18.1 # Biblioteca para internacionalização e localização de aplicativos.
+  google_maps_flutter: ^2.5.0 # Integração do Google Maps para Flutter.
+  flutter_config: ^2.0.2 # Leitura de variáveis de ambiente no Flutter.
+  line_icons: ^2.0.3 # Conjunto de ícones da Line Icons.
+  geolocator: ^10.1.0 # Serviços de geolocalização para obter a localização do dispositivo.
+  firebase_storage: ^11.2.8 # Armazenamento de arquivos no Firebase.
+  file_picker: ^6.0.0 # Escolha de arquivos a partir do dispositivo.
+  flutter_native_splash: ^2.3.3 # Criação de telas de splash nativas.
+  flutter_otp_text_field: ^1.1.1 # Campo de texto para entrada de códigos OTP (One-Time Password).
+  line_awesome_flutter: ^2.0.0 # Conjunto de ícones Line Awesome.
+  mask_text_input_formatter: ^2.5.0 # Formatação de entrada de texto, como máscaras para telefone, CPF, etc.
+  google_sign_in: ^6.1.5 # Autenticação usando Google Sign-In.
+  flutter_facebook_auth: ^6.0.2 # Autenticação usando Facebook.
+  brasil_fields: ^1.14.0 # Utilitários e classes para padrões brasileiros, como CPF, CNPJ, etc.
+  build_runner: ^2.4.6 # Ferramenta para geração de código automatizada.
+  msh_checkbox: ^2.0.1 # Checkbox personalizado.
+  geocoding: ^2.1.1 # Geocodificação para obter informações de localização com base em coordenadas.
+  location: ^5.0.3 # Biblioteca para obtenção de informações de localização do dispositivo.
+  image_picker: ^1.0.4 # Escolha de imagens a partir do dispositivo.
+  video_player: ^2.7.2
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter_native_splash: 
+  color: "#F7F6F1"
+  color_dark: "#272727"
+  image: assets/images/city-splash-screen.jpg
+  image_dark: assets/images/city-splash-screen.jpg
+
+  android_12:
+    image: assets/images/city-splash-screen.jpg
+    icon_background_color: "#F7F6F1"
+    image_dark: assets/images/city-splash-screen.jpg
+    icon_background_color_dark: "#272727"
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
