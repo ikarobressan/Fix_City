@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ikaro.the_safe_city"
+        applicationId "com.ikaro.fix_city"
         minSdkVersion 22
         multiDexEnabled true
         targetSdkVersion flutter.targetSdkVersion

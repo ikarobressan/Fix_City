@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC_0lWkqO-YwMxZIxqw1tapIAOPL_lFO8Q',
-    appId: '1:151445648706:android:68bcb7dd71130c3cee04db',
+    appId: '1:151445648706:android:818ee3b593dc8a8eee04db',
     messagingSenderId: '151445648706',
     projectId: 'safe-city-c98f2',
     storageBucket: 'safe-city-c98f2.appspot.com',
@@ -59,10 +59,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAeQ67jbhbh0wtOAA2yycMIarpFWs61bc4',
-    appId: '1:151445648706:ios:ff417ad72413bb89ee04db',
+    appId: '1:151445648706:ios:a5c0d258d0e162e0ee04db',
     messagingSenderId: '151445648706',
     projectId: 'safe-city-c98f2',
     storageBucket: 'safe-city-c98f2.appspot.com',
-    iosBundleId: 'com.ikaro.theSafeCity',
+    androidClientId: '151445648706-d5jatk1cm8jjpg52dc8cc3k6hk3lived.apps.googleusercontent.com',
+    iosClientId: '151445648706-d2oepmhb9b7gvr9fil21u3e48fg4kn6k.apps.googleusercontent.com',
+    iosBundleId: 'com.ikaro.FixCity',
   );
 }

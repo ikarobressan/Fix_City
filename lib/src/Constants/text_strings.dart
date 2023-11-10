@@ -33,7 +33,7 @@ const String tAccountCreateVerifyEmail = "Conta criada, verique seu e-mail";
 
 //* -- Welcome Screen Text
 const String tWelcomeTitle =
-    "Bem vindo ao aplicativo\nSafe City, entre ou \ncadastre-se e ajude \na sua cidade.";
+    "Bem vindo ao aplicativo\nFix City, entre ou \ncadastre-se e ajude \na sua cidade.";
 
 //* -- Sing Up Screen Text
 const String tSignUpTitle = "Junte-se a nós e faça a diferença na sua cidade.";

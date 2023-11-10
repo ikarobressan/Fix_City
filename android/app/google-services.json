@@ -7,20 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:151445648706:android:68bcb7dd71130c3cee04db",
+        "mobilesdk_app_id": "1:151445648706:android:818ee3b593dc8a8eee04db",
         "android_client_info": {
-          "package_name": "com.ikaro.the_safe_city"
+          "package_name": "com.ikaro.fix_city"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "151445648706-d5jatk1cm8jjpg52dc8cc3k6hk3lived.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ikaro.the_safe_city",
-            "certificate_hash": "039768c2a553f0b67fa4f01207b27b940a870b0f"
-          }
-        },
         {
           "client_id": "151445648706-ve740dap8ohg6sp0m4op6ku0vbr2hb7v.apps.googleusercontent.com",
           "client_type": 3
@@ -42,7 +34,7 @@
               "client_id": "151445648706-9f5egf1479k9nlefdbvvfrafkjtifge2.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ikaro.theSafeCity"
+                "bundle_id": "com.example.theSafeCity"
               }
             }
           ]

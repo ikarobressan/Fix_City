@@ -1,4 +1,4 @@
-package com.ikaro.the_safe_city
+package com.ikaro.fix_city
 
 import io.flutter.embedding.android.FlutterActivity
 
