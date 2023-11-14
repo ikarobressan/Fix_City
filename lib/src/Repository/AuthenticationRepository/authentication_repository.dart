@@ -5,9 +5,9 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:the_safe_city/src/Features/Authentication/Screens/UpdateOrRegister/update_or_register_screen.dart';
 
 import '../../Features/Authentication/Models/user_model.dart';
+import '../../Features/Authentication/Screens/UpdateOrRegister/update_or_register_screen.dart';
 import '../../Features/Authentication/Screens/Welcome/home_page.dart';
 import '../../Features/Core/NavBar/navigation_bar.dart';
 import '../../Utils/Helper/helper_controller.dart';
@@ -39,7 +39,6 @@ class AuthenticationRepository extends GetxController {
   String get getDisplayName => firebaseUser?.displayName ?? "";
   String get getPhoneNo => firebaseUser?.phoneNumber ?? "";
 
-
   setInitialScreen(User? user) async {
     user == null
         ? Get.offAll(() => const WelcomeScreen())
@@ -59,12 +58,16 @@ class AuthenticationRepository extends GetxController {
   Future<MyLoginResult> loginWithEmailAndPassword(
       String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
       return MyLoginResult.success();
     } on FirebaseAuthException catch (e) {
       if (isInvalidCredentialsError(e)) {
         return MyLoginResult.failure(
-            'Verifique o e-mail ou a senha e tente novamente.');
+          'Verifique o e-mail ou a senha e tente novamente.',
+        );
       } else {
         final result = MyExceptions.fromCode(e.code);
         throw result.message;
@@ -126,7 +129,7 @@ class AuthenticationRepository extends GetxController {
       google = googleUser;
     } catch (e) {
       log('Erro de autenticação com Google: $e');
-      throw e;
+      rethrow;
     }
 
     try {
@@ -163,8 +166,9 @@ class AuthenticationRepository extends GetxController {
   Future<UserCredential> signInWithFacebook() async {
     try {
       // Aciona o fluxo de Login
-      final LoginResult loginResult =
-          await FacebookAuth.instance.login(permissions: ['email']);
+      final LoginResult loginResult = await FacebookAuth.instance.login(
+        permissions: ['email'],
+      );
 
       // Crie uma credencial a partir do token de acesso
       final AccessToken accessToken = loginResult.accessToken!;
@@ -187,9 +191,9 @@ class AuthenticationRepository extends GetxController {
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
       // Removido o .then e usando await
-      await auth
-          .sendPasswordResetEmail(email: email)
-          .then((value) => log('E-mail enviado'));
+      await auth.sendPasswordResetEmail(email: email).then(
+            (value) => log('E-mail enviado'),
+          );
     } on FirebaseAuthException catch (e) {
       final result = MyExceptions.fromCode(e.code);
       throw result.message;

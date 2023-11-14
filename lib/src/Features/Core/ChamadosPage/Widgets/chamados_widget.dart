@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Form/Screens/edit_report_new.dart';
 
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
 import '../../../Authentication/Models/user_model.dart';
+import '../../Category/provider/firestore_provider.dart';
 import '../Controller/user_controller.dart';
+import '../Form/Screens/edit_report_new.dart';
 import '../model/chamados_model.dart';
 
 class ChamadosWidget extends StatefulWidget {
@@ -97,7 +97,7 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
                                 Icons.cancel_presentation_rounded,
                                 color: Colors.red,
                                 size: 35.8,
-                              )
+                              ),
                           ],
                         ),
                         const Gap(5),
@@ -170,7 +170,7 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
                               flex: 0,
                               child: Text(
                                 textAlign: TextAlign.left,
-                                "Data atualizado: ",
+                                "Data atualizada: ",
                                 style:
                                     Theme.of(context).textTheme.headlineMedium,
                               ),
@@ -202,11 +202,14 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
                                       final documentData =
                                           await FirestoreProvider
                                               .getDocumentById(
-                                                  "Chamados",
-                                                  widget._reportingModel
-                                                      .chamadoId!);
-                                      Get.to(() => EditReportFormScreenNew(
-                                          documentData: documentData));
+                                        "Chamados",
+                                        widget._reportingModel.chamadoId!,
+                                      );
+                                      Get.to(
+                                        () => EditReportFormScreenNew(
+                                          documentData: documentData,
+                                        ),
+                                      );
                                     },
                                     child: Text(
                                       'Editar',

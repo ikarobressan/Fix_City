@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Authentication/Screens/Welcome/home_page.dart';
 
 import '../../../../CommomWidgets/Form/form_divider_widget.dart';
 import '../../../../CommomWidgets/Form/form_header_widget.dart';
@@ -8,6 +7,7 @@ import '../../../../CommomWidgets/Form/social_footer.dart';
 import '../../../../Constants/image_strings.dart';
 import '../../../../Constants/text_strings.dart';
 import '../SignUp/signup_screen.dart';
+import '../Welcome/home_page.dart';
 import 'Widgets/login_form_widget.dart';
 
 class LoginScreen extends StatelessWidget {

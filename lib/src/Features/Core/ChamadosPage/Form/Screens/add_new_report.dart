@@ -6,11 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
 
 import '../../../../../Constants/colors.dart';
 import '../../../../../Controller/theme_controller.dart';
 import '../../../../../Services/storage_service.dart';
+import '../../../Category/provider/firestore_provider.dart';
 import '../../Controller/chamados_controller.dart';
 import '../Widgets/input_address.dart';
 import '../Widgets/input_description.dart';
@@ -120,8 +120,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
     final ImagePicker picker = ImagePicker();
 
     // Aciona a câmera para capturar uma imagem
-    final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.camera);
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.camera,
+    );
 
     // Se uma imagem foi capturada
     if (pickedFile != null) {
@@ -158,8 +159,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
     try {
       // Aciona a câmera para gravar um vídeo
-      final XFile? pickedFile =
-          await picker.pickVideo(source: ImageSource.camera);
+      final XFile? pickedFile = await picker.pickVideo(
+        source: ImageSource.camera,
+      );
 
       // Se um vídeo foi gravado
       if (pickedFile != null) {
@@ -209,8 +211,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
     log('Iniciando _getImageFromGallery...');
 
     // Aciona o seletor de arquivos para escolher uma imagem
-    FilePickerResult? result =
-        await FilePicker.platform.pickFiles(type: FileType.image);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+    );
 
     // Se uma imagem foi selecionada
     if (result != null) {
@@ -380,16 +383,17 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   )
                 ],
               ),
-
-              Column(children: [
-                InputAddress(
+              Column(
+                children: [
+                  InputAddress(
                     address: address,
                     addressNumber: addressNumber,
                     cep: cep,
-                    referPoint: referPoint),
-                const Gap(20),
-              ]),
-
+                    referPoint: referPoint,
+                  ),
+                  const Gap(20),
+                ],
+              ),
               Column(
                 children: [
                   Row(
@@ -406,7 +410,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       Expanded(
                         child: OutlinedButton(
                           style: OutlinedButton.styleFrom(
-                            fixedSize: const Size(160, 50),
+                            // fixedSize: const Size(160, 50),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -426,7 +430,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(160, 50),
+                            // fixedSize: const Size(160, 50),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -448,22 +452,24 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                   const Gap(5),
                   if (selectedImageFile != null ||
                       selectedImageFile?.path != null)
-                    Row(children: [
-                      Image.file(
-                        File(selectedImageFile!.path!),
-
-                        // Altura da imagem
-                        height: 200,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                            child: Text(
-                              'Erro ao carregar a imagem.',
-                              style: Theme.of(context).textTheme.headlineLarge,
-                            ),
-                          );
-                        },
-                      ),
-                    ]),
+                    Row(
+                      children: [
+                        Image.file(
+                          File(selectedImageFile!.path!),
+                          // Altura da imagem
+                          height: 200,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Center(
+                              child: Text(
+                                'Erro ao carregar a imagem.',
+                                style:
+                                    Theme.of(context).textTheme.headlineLarge,
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                 ],
               ),
               const Gap(20),
@@ -513,19 +519,19 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             isDone: false,
                           );
                           //* Salva direto na coleção Chamados
-                          // await ReportController().addNewReportForAdmin(
-                          //   address.text.trim(),
-                          //   cep.text.trim(),
-                          //   referPoint.text.trim(),
-                          //   addressNumber.text.trim(),
-                          //   description.text.trim(),
-                          //   _selectedCategory,
-                          //   definicaoCategoria.text.trim(),
-                          //   imageFile: selectedImageFile!,
-                          //   videoFile: selectedVideoFile,
-                          //   isDone: false,
-                          // );
-                          //log(submitData().toString());
+                          await ReportController().addNewReportForAdmin(
+                            address.text.trim(),
+                            cep.text.trim(),
+                            referPoint.text.trim(),
+                            addressNumber.text.trim(),
+                            description.text.trim(),
+                            _selectedCategory,
+                            definicaoCategoria.text.trim(),
+                            imageFile: selectedImageFile!,
+                            videoFile: selectedVideoFile,
+                            isDone: false,
+                          );
+                          log(submitData().toString());
                           //? Isto irá fechar o formulário após a submissão bem-sucedida
                           // Exibe uma notificação de sucesso.
 

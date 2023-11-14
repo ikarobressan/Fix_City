@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
 
 import '../../../../../Constants/colors.dart';
+import '../../../Category/provider/firestore_provider.dart';
 import '../../model/chamados_model.dart';
 import '../../Widgets/chamados_widget.dart';
 import '../../Widgets/report_detail_screen.dart';

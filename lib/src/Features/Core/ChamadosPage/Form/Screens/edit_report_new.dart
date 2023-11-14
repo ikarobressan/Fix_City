@@ -1,9 +1,10 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Controller/chamados_controller.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/model/chamados_model.dart';
-import 'package:the_safe_city/src/Utils/Widgets/input_text_field.dart';
+
+import '../../../../../Utils/Widgets/input_text_field.dart';
+import '../../Controller/chamados_controller.dart';
+import '../../model/chamados_model.dart';
 
 class EditReportFormScreenNew extends StatefulWidget {
   const EditReportFormScreenNew({super.key, this.documentData});
@@ -61,8 +62,10 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
         messageString: widget.documentData["Mensagem do Admin"],
       );
 
-      ReportController()
-          .updateReport(widget.documentData["Id do Chamado"], updatedReport);
+      ReportController().updateReport(
+        widget.documentData["Id do Chamado"],
+        updatedReport,
+      );
 
       Navigator.of(key_sccaffold.currentContext!).pop();
     }
@@ -76,15 +79,18 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
       "Encerrado",
       "Cancelado"
     ];
-    dynamic activeStep = statusMessageList
-        .indexOf(widget.documentData["Status do chamado"].toString());
+    dynamic activeStep = statusMessageList.indexOf(
+      widget.documentData["Status do chamado"].toString(),
+    );
 
     return Scaffold(
       key: key_sccaffold,
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        title: Text('Editar chamado',
-            style: Theme.of(context).textTheme.displayLarge),
+        title: Text(
+          'Editar chamado',
+          style: Theme.of(context).textTheme.displayLarge,
+        ),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 5,
@@ -123,22 +129,23 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
                 finishedLineColor: Colors.green,
               ),
               steps: List.generate(
-                  statusMessageList.length,
-                  (index) => EasyStep(
-                        customStep: CircleAvatar(
-                          radius: 8,
-                          backgroundColor: Colors.green,
-                          child: CircleAvatar(
-                            radius: 7,
-                            backgroundColor: activeStep >= index
-                                ? activeStep == statusMessageList.length
-                                    ? Colors.red
-                                    : Colors.green
-                                : Colors.grey,
-                          ),
-                        ),
-                        title: statusMessageList[index],
-                      )),
+                statusMessageList.length,
+                (index) => EasyStep(
+                  customStep: CircleAvatar(
+                    radius: 8,
+                    backgroundColor: Colors.green,
+                    child: CircleAvatar(
+                      radius: 7,
+                      backgroundColor: activeStep >= index
+                          ? activeStep == statusMessageList.length
+                              ? Colors.red
+                              : Colors.green
+                          : Colors.grey,
+                    ),
+                  ),
+                  title: statusMessageList[index],
+                ),
+              ),
             ),
             const Gap(20),
             Text(
@@ -147,18 +154,22 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
             ),
             DropdownButton(
               value: widget.documentData["Status do chamado"].toString(),
-              items: statusMessageList.map((String value) {
-                return DropdownMenuItem(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+              items: statusMessageList.map(
+                (String value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value),
+                  );
+                },
+              ).toList(),
               onChanged: (String? value) {
-                setState(() {
-                  widget.documentData["Status do chamado"] = value!;
-                  activeStep = statusMessageList.indexOf(
-                      widget.documentData["Status do chamado"].toString());
-                });
+                setState(
+                  () {
+                    widget.documentData["Status do chamado"] = value!;
+                    activeStep = statusMessageList.indexOf(
+                        widget.documentData["Status do chamado"].toString());
+                  },
+                );
               },
             ),
             const Gap(20),
@@ -178,18 +189,19 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
             ),
             const Gap(20),
             ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(5.0),
-                  minimumSize: const Size(100, 20),
-                  elevation: 5,
-                ),
-                onPressed: () {
-                  _updateReport();
-                },
-                child: Text(
-                  "Editar",
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ))
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.all(5.0),
+                minimumSize: const Size(100, 20),
+                elevation: 5,
+              ),
+              onPressed: () {
+                _updateReport();
+              },
+              child: Text(
+                "Editar",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ),
           ],
         ),
       ),

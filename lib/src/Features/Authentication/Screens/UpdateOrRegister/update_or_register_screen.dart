@@ -4,10 +4,10 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:the_safe_city/src/Features/Authentication/Screens/Login/login_screen.dart';
 
 import '../../../../Constants/text_strings.dart';
 import '../../../../Repository/AuthenticationRepository/authentication_repository.dart';
+import '../Login/login_screen.dart';
 import '../Welcome/home_page.dart';
 
 class UpdateOrRegisterScreen extends StatelessWidget {

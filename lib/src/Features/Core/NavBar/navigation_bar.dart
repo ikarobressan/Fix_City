@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'package:the_safe_city/src/Constants/colors.dart';
-import 'package:the_safe_city/src/Controller/theme_controller.dart';
-import 'package:the_safe_city/src/Features/Authentication/Controllers/nav_bar_controller.dart';
-import 'package:the_safe_city/src/Features/Authentication/Models/user_model.dart';
-import 'package:the_safe_city/src/Features/Core/Category/views/category_screen.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Controller/user_controller.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Screen/chamados_screen.dart';
-import 'package:the_safe_city/src/Features/Core/Profile/profile_screen.dart';
+import '../../../Constants/colors.dart';
+import '../../../Controller/theme_controller.dart';
+import '../../Authentication/Controllers/nav_bar_controller.dart';
+import '../../Authentication/Models/user_model.dart';
+import '../Category/views/category_screen.dart';
+import '../ChamadosPage/Controller/user_controller.dart';
+import '../ChamadosPage/Screen/chamados_screen.dart';
+import '../Profile/profile_screen.dart';
 
 class MyNavigationBar extends StatefulWidget {
   const MyNavigationBar({super.key});
@@ -31,83 +31,84 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
     return StreamBuilder<UserModel?>(
-        stream: userController.userStream,
-        builder: (context, snapshot) {
-          final user = snapshot.data;
-          bool isAdmin = user?.isAdmin ?? false;
+      stream: userController.userStream,
+      builder: (context, snapshot) {
+        final user = snapshot.data;
+        bool isAdmin = user?.isAdmin ?? false;
 
-          final List<GetPage> filteredPages = _pages.where((page) {
-            if (page.name == "/category" && !isAdmin) {
-              return false; // Remover a página de categoria se o usuário nao for admin
-            }
-            return true; // Manter todas as outras páginas
-          }).toList();
+        final List<GetPage> filteredPages = _pages.where((page) {
+          if (page.name == "/category" && !isAdmin) {
+            return false; // Remover a página de categoria se o usuário nao for admin
+          }
+          return true; // Manter todas as outras páginas
+        }).toList();
 
-          return StreamBuilder<bool>(
-            stream: themeController.isDarkMode.stream,
-            initialData: themeController.isDarkMode.value,
-            builder: (context, snapshot) {
-              final isDark = snapshot.data ?? false;
-              return GetBuilder<NavBarController>(
-                builder: (context) {
-                  int selectedIndex =
-                      controller.tabIndex.clamp(0, filteredPages.length - 1);
-                  return Scaffold(
-                    body: IndexedStack(
-                      index: controller.tabIndex,
-                      children:
-                          filteredPages.map((page) => page.page()).toList(),
-                    ),
-                    bottomNavigationBar: BottomNavigationBar(
-                      backgroundColor: isDark ? darkNavBar : whiteNavBar,
-                      selectedItemColor: isDark ? whiteColor : blackColor,
-                      unselectedItemColor: isDark ? white60 : greyShade600,
-                      currentIndex: controller.tabIndex,
-                      onTap: (index) {
-                        setState(() {
-                          controller.tabIndex = index;
-                        });
-                      },
-                      items: [
+        return StreamBuilder<bool>(
+          stream: themeController.isDarkMode.stream,
+          initialData: themeController.isDarkMode.value,
+          builder: (context, snapshot) {
+            final isDark = snapshot.data ?? false;
+            return GetBuilder<NavBarController>(
+              builder: (context) {
+                int selectedIndex = controller.tabIndex.clamp(
+                  0,
+                  filteredPages.length - 1,
+                );
+                return Scaffold(
+                  body: IndexedStack(
+                    index: controller.tabIndex,
+                    children: filteredPages.map((page) => page.page()).toList(),
+                  ),
+                  bottomNavigationBar: BottomNavigationBar(
+                    backgroundColor: isDark ? darkNavBar : whiteNavBar,
+                    selectedItemColor: isDark ? whiteColor : blackColor,
+                    unselectedItemColor: isDark ? white60 : greyShade600,
+                    currentIndex: controller.tabIndex,
+                    onTap: (index) {
+                      setState(() {
+                        controller.tabIndex = index;
+                      });
+                    },
+                    items: [
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.view_list_rounded,
+                          color: isDark ? whiteColor : blackColor,
+                        ),
+                        label: selectedIndex == 0 ? "Chamados" : "",
+                        backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
+                      ),
+                      if (isAdmin)
                         BottomNavigationBarItem(
                           icon: Icon(
-                            Icons.view_list_rounded,
+                            Icons.sell_sharp,
                             color: isDark ? whiteColor : blackColor,
                           ),
-                          label: selectedIndex == 0 ? "Chamados" : "",
+                          label: selectedIndex == 1 ? "Categorias" : "",
                           backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
                         ),
-                        if (isAdmin)
-                          BottomNavigationBarItem(
-                            icon: Icon(
-                              Icons.sell_sharp,
-                              color: isDark ? whiteColor : blackColor,
-                            ),
-                            label: selectedIndex == 1 ? "Categorias" : "",
-                            backgroundColor:
-                                isDark ? darkNavBar : whiteBgNavBar,
-                          ),
-                        BottomNavigationBarItem(
-                          icon: Icon(
-                            Icons.person_sharp,
-                            color: isDark ? whiteColor : Colors.black,
-                          ),
-                          label: isAdmin
-                              ? selectedIndex == 2
-                                  ? "Perfil"
-                                  : ""
-                              : selectedIndex == 1
-                                  ? "Perfil"
-                                  : "",
-                          backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.person_sharp,
+                          color: isDark ? whiteColor : Colors.black,
                         ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          );
-        });
+                        label: isAdmin
+                            ? selectedIndex == 2
+                                ? "Perfil"
+                                : ""
+                            : selectedIndex == 1
+                                ? "Perfil"
+                                : "",
+                        backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:the_safe_city/src/Features/Authentication/Screens/Login/login_screen.dart';
 
 import '../../../../Constants/colors.dart';
 import '../../../../Constants/text_strings.dart';
 import '../../../../Controller/theme_controller.dart';
 import '../../../../Repository/AuthenticationRepository/authentication_repository.dart';
 import '../../Controllers/login_controller.dart';
+import '../Login/login_screen.dart';
 
 class PasswordChangeScreen extends StatefulWidget {
   const PasswordChangeScreen({super.key});

@@ -5,17 +5,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:the_safe_city/src/Features/Core/Category/provider/fireauth_provider.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Screen/UserPage/user_chamados_screenNew.dart';
+
 import '../../../../CommomWidgets/Buttons/primary_button.dart';
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
+import '../../Category/provider/fireauth_provider.dart';
 import '../model/chamados_model.dart';
 import '../../../Authentication/Models/user_model.dart';
 import '../Controller/user_controller.dart';
 import '../Widgets/chamados_page_body_header.dart';
 import 'AdminPage/admin_chamados_screen.dart';
+import 'UserPage/user_chamados_screenNew.dart';
 
 class ChamadosScreen extends StatefulWidget {
   const ChamadosScreen({this.userModel, this.reportingModel, super.key});

@@ -2,7 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:the_safe_city/src/Features/Core/Category/models/category.dart';
+
+import '../models/category.dart';
 
 class FirestoreProvider with ChangeNotifier {
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -24,7 +25,7 @@ class FirestoreProvider with ChangeNotifier {
           .snapshots()
           .map((querySnapshot) => querySnapshot.docs);
     } catch (e) {
-      print('Erro ao obter chamados: $e');
+      log('Erro ao obter chamados: $e');
       return Stream.value([]);
     }
   }
@@ -35,16 +36,22 @@ class FirestoreProvider with ChangeNotifier {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await FirebaseFirestore.instance.collection(collectionName).get();
 
-    querySnapshot.docs.forEach((doc) {
-      categories.add(doc['name']);
-    });
+    querySnapshot.docs.forEach(
+      (doc) {
+        categories.add(
+          doc['name'],
+        );
+      },
+    );
 
     return categories;
   }
 
   static Future<void> putDocument(
-      String collectionName, Map<String, dynamic> data,
-      {String? documentId}) async {
+    String collectionName,
+    Map<String, dynamic> data, {
+    String? documentId,
+  }) async {
     try {
       if (documentId != null) {
         // Se documentId não for nulo, atualize o documento existente.
@@ -63,7 +70,9 @@ class FirestoreProvider with ChangeNotifier {
   }
 
   static Future<void> removeDocument(
-      String collectionName, String documentId) async {
+    String collectionName,
+    String documentId,
+  ) async {
     try {
       await _firestore.collection(collectionName).doc(documentId).delete();
       log("Sucess removeDocument");
@@ -73,7 +82,9 @@ class FirestoreProvider with ChangeNotifier {
   }
 
   static Future<Map<String, dynamic>> getDocumentById(
-      String collectionName, String documentId) async {
+    String collectionName,
+    String documentId,
+  ) async {
     DocumentReference documentReference =
         _firestore.collection(collectionName).doc(documentId);
 

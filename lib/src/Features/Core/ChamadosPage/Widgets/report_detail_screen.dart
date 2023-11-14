@@ -4,11 +4,12 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/full_screen_image.dart';
+
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
 import '../Controller/chamados_controller.dart';
 import '../model/chamados_model.dart';
+import 'full_screen_image.dart';
 import 'full_screen_video_player.dart';
 import 'video_player.dart';
 
@@ -71,8 +72,9 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
       "Encerrado",
       "Cancelado"
     ];
-    dynamic activeStep = statusMessageList
-        .indexOf(widget.reportingModel.statusMessage.toString());
+    dynamic activeStep = statusMessageList.indexOf(
+      widget.reportingModel.statusMessage.toString(),
+    );
     log('Imagens recuperadas: $imageUrls');
     final isDark = themeController.isDarkMode.value;
 
@@ -120,22 +122,23 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         finishedLineColor: Colors.green,
                       ),
                       steps: List.generate(
-                          statusMessageList.length,
-                          (index) => EasyStep(
-                                customStep: CircleAvatar(
-                                  radius: 8,
-                                  backgroundColor: Colors.green,
-                                  child: CircleAvatar(
-                                    radius: 7,
-                                    backgroundColor: activeStep >= index
-                                        ? activeStep == statusMessageList.length
-                                            ? Colors.red
-                                            : Colors.green
-                                        : Colors.grey,
-                                  ),
-                                ),
-                                title: statusMessageList[index],
-                              )),
+                        statusMessageList.length,
+                        (index) => EasyStep(
+                          customStep: CircleAvatar(
+                            radius: 8,
+                            backgroundColor: Colors.green,
+                            child: CircleAvatar(
+                              radius: 7,
+                              backgroundColor: activeStep >= index
+                                  ? activeStep == statusMessageList.length
+                                      ? Colors.red
+                                      : Colors.green
+                                  : Colors.grey,
+                            ),
+                          ),
+                          title: statusMessageList[index],
+                        ),
+                      ),
                     ),
                     const Gap(5),
                     Row(

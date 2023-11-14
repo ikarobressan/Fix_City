@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:the_safe_city/src/Features/Core/Category/models/category.dart';
-import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
+
+import '../models/category.dart';
+import '../provider/firestore_provider.dart';
 
 class CategoryForm extends StatelessWidget {
   final _form = GlobalKey<FormState>();
@@ -16,13 +17,16 @@ class CategoryForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (category != null){
+    if (category != null) {
       _loadFormData(category as Category);
     }
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Criar categoria', style: Theme.of(context).textTheme.headlineLarge),
+        title: Text(
+          'Criar categoria',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
@@ -49,16 +53,18 @@ class CategoryForm extends StatelessWidget {
         padding: const EdgeInsets.all(15),
         child: Form(
           key: _form,
-          child: Column(children: [
-            TextFormField(
-              initialValue: _formData['name'],
-              decoration: const InputDecoration(labelText: 'Nome'),
-              validator: (value) {
-                return null;
-              },
-              onSaved: (value) => _formData['name'] = value!,
-            )
-          ]),
+          child: Column(
+            children: [
+              TextFormField(
+                initialValue: _formData['name'],
+                decoration: const InputDecoration(labelText: 'Nome'),
+                validator: (value) {
+                  return null;
+                },
+                onSaved: (value) => _formData['name'] = value!,
+              ),
+            ],
+          ),
         ),
       ),
     );

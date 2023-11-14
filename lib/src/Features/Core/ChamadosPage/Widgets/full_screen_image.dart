@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Constants/colors.dart';
+
+import '../../../../Constants/colors.dart';
 
 class FullScreenImage extends StatelessWidget {
   final String imageUrl;

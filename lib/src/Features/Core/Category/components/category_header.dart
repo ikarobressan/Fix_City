@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/Category/views/category_form.dart';
+
+import '../views/category_form.dart';
 
 class CategoryHeader extends StatelessWidget {
   const CategoryHeader({super.key, required this.formattedDate});
