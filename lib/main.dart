@@ -54,19 +54,21 @@ void createdUserAdmin() async {
       emailAdmin,
       senhaAdmin,
     );
-    await firestore.collection('Users').doc(firebaseAuth.currentUser!.uid).set({
-      "id": firebaseAuth.currentUser!.uid,
-      "E-mail": 'admin@admin.com',
-      "Nome Completo": 'admin',
-      "Numero de Telefone": '',
-      "CPF": '',
-      "Admin": true,
-    }).catchError(
+    await firestore.collection('Users').doc(firebaseAuth.currentUser!.uid).set(
+      {
+        "id": firebaseAuth.currentUser!.uid,
+        "E-mail": 'admin@admin.com',
+        "Nome Completo": 'admin',
+        "Numero de Telefone": '',
+        "CPF": '',
+        "Admin": true,
+      },
+    ).catchError(
       (e) => log('Erro ao criar coleção: $e'),
     );
     await firebaseAuth.signOut();
 
-    log("== User admin not existe, created");
+    log("== User admin not exist, created");
   } catch (e) {
     if (e == 'O e-mail informado já possui um cadastro.') {
       log("== User admin existe");
