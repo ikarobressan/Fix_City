@@ -22,11 +22,9 @@ class SearchHandler {
 
       // Filtra os relatórios que contêm a consulta nos campos relevantes
       final filteredReports = reports.where((report) {
-        return report.category.toString().contains(query) ||
-            report.referPoint.contains(query) ||
-            report.address.contains(query) ||
-            report.addressNumber.contains(query) ||
-            report.cep.contains(query);
+        return report.category!.toLowerCase().contains(query.toLowerCase()) ||
+        report.description!.toLowerCase().contains(query.toLowerCase()) ||
+        report.statusMessage!.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
       // Retorna os relatórios filtrados

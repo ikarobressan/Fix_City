@@ -17,6 +17,8 @@ class UserRepository extends GetxController {
       if (await recordExist(user.email)) {
         throw "O e-mail informado já possui um cadastro";
       } else {
+        log('========> $user');
+        log('========> ${user.toJson()}');
         DocumentReference docRef =
             await _db.collection("Users").add(user.toJson());
         // Retorna o ID do documento criado

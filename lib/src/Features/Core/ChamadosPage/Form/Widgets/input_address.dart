@@ -6,9 +6,17 @@ import 'package:location/location.dart' as loc;
 import '../../../../../Utils/Widgets/input_text_field.dart';
 
 class InputAddress extends StatelessWidget {
-  const InputAddress({super.key, required this.address});
+  const InputAddress(
+      {super.key,
+      required this.address,
+      required this.addressNumber,
+      required this.cep,
+      required this.referPoint});
 
   final TextEditingController address;
+  final TextEditingController addressNumber;
+  final TextEditingController cep;
+  final TextEditingController referPoint;
 
   // Método para obter a localização atual do usuário.
   Future<loc.LocationData?> getCurrentLocation() async {
@@ -17,7 +25,6 @@ class InputAddress extends StatelessWidget {
 
     bool serviceEnabled;
     loc.PermissionStatus permissionGranted;
-    loc.LocationData? locationData;
 
     // Verifica se o serviço de localização está ativado.
     serviceEnabled = await location.serviceEnabled();
@@ -40,25 +47,22 @@ class InputAddress extends StatelessWidget {
     }
 
     // Obtém a localização atual.
-    locationData = await location.getLocation();
-    return locationData;
+    return await location.getLocation();
   }
 
   // Método para obter o endereço completo com base na latitude e longitude fornecidas.
-  Future<String> getAddress(double latitude, double longitude) async {
+  Future<Placemark> getAddress(double latitude, double longitude) async {
     try {
       // Busca os detalhes do endereço a partir das coordenadas.
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
-        final Placemark pos = placemarks[0];
-        // Retorna o nome da rua ou avenida.
-        return '${pos.thoroughfare}';  
+        return placemarks[1];
       }
-      return "Endereço não disponível";
+      throw "Endereço não disponível";
     } catch (e) {
       // Em caso de erro, retorna a mensagem de erro.
-      return "Erro: ${e.toString()}";
+      throw "Erro: ${e.toString()}";
     }
   }
 
@@ -70,9 +74,11 @@ class InputAddress extends StatelessWidget {
       double? latitude = locationData.latitude;
       double? longitude = locationData.longitude;
       if (latitude != null && longitude != null) {
-        // Se a latitude e a longitude forem válidas, busca o endereço e define no `TextEditingController`.
-        String addressText = await getAddress(latitude, longitude);
-        address.text = addressText;
+        Placemark addressPlacemark = await getAddress(latitude, longitude);
+        address.text =
+            '${addressPlacemark.thoroughfare} - ${addressPlacemark.subLocality}, ${addressPlacemark.subAdministrativeArea} - ${addressPlacemark.administrativeArea}';
+        addressNumber.text = '${addressPlacemark.name}';
+        cep.text = '${addressPlacemark.postalCode}';
       }
     }
   }
@@ -81,31 +87,97 @@ class InputAddress extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Gap(12),
+        // ---------------------------------------------- ENDEREÇO
+        const Gap(15),
         Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               'Endereço',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            TextButton.icon(
+              onPressed: () => fillAddress(),
+              icon: const Icon(Icons.location_on, color: Colors.orangeAccent),
+              label: Text(
+                'Usar localização atual',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ),
           ],
         ),
-        const Gap(6),
+        const Gap(5),
         InputTextField(
           controller: address,
           keyBoardType: TextInputType.streetAddress,
-          hintText: 'Preencha seu endereço aqui',
-          maxLines: 1,
+          hintText: 'Endereço',
           obscureText: false,
           onValidator: (value) {
-            // Verifica se o endereço está em branco.
-            return value.isBlank ? 'Insira um endereço' : null;
+            return null;
           },
-          suffixIcon: IconButton(
-            icon: const Icon(Icons.location_searching_rounded),
-            onPressed: () => fillAddress(),
-          ),
+        ),
+        // ---------------------------------------------- NÚMERO
+        const Gap(15),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Número',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+        const Gap(5),
+        InputTextField(
+          controller: addressNumber,
+          keyBoardType: TextInputType.number,
+          hintText: 'Número',
+          obscureText: false,
+          onValidator: (value) {
+            return null;
+          },
+        ),
+        // ---------------------------------------------- CEP
+        const Gap(15),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'CEP',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+        const Gap(5),
+        InputTextField(
+          controller: cep,
+          keyBoardType: TextInputType.number,
+          hintText: 'CEP',
+          obscureText: false,
+          onValidator: (value) {
+            return null;
+          },
+        ),
+        // ---------------------------------------------- Ponto de referência
+        const Gap(15),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Ponto de referência',
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+          ],
+        ),
+        const Gap(5),
+        InputTextField(
+          controller: referPoint,
+          keyBoardType: TextInputType.text,
+          hintText: 'Ponto de referência',
+          obscureText: false,
+          onValidator: (value) {
+            return null;
+          },
         ),
       ],
     );

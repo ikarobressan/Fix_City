@@ -3,6 +3,8 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:the_safe_city/src/Features/Core/Category/models/category.dart';
+import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
 
 import '../../../../../Constants/colors.dart';
 import '../../model/chamados_model.dart';
@@ -26,21 +28,22 @@ class _AdminChamadosState extends State<AdminChamados> {
   final searchBar = TextEditingController();
   final SearchHandler searchHandler = SearchHandler();
   List<ReportingModel> searchResults = [];
+  List<String> categories = [];
+  final isSelected = TextEditingController();
 
-  final List<String> categories = [
-    'Árvore Caída',
-    'Buraco na calçada',
-    'Buraco na rua',
-    'Bueiro Emtupido',
-    'Iluminação Inadequada',
-    'Lixo Acumulado',
-    'Luz do Poste Queimada',
-    'Obstrução na Via',
-    'Outro',
-    'Pichação',
-    'Sinalização Inadequada',
-    'Vazamento de Água',
-  ];
+  Future<void> _loadCategories() async {
+    List<String> _categories =
+        await FirestoreProvider.getDocuments('categories');
+    setState(() {
+      categories = _categories;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
 
   // Função para lidar com a pesquisa
   void handleSearch(String query) async {
@@ -65,6 +68,14 @@ class _AdminChamadosState extends State<AdminChamados> {
     });
   }
 
+  void clearSearchCategory(isSelected) {
+    setState(() {
+      // Limpa os resultados da pesquisa
+      isSelected.text = isSelected;
+      searchResults = [];
+    });
+  }
+
   // Função para atualizar os resultados da pesquisa após filtragem
   void onFiltered(List<ReportingModel> filteredResults) {
     setState(() {
@@ -74,6 +85,7 @@ class _AdminChamadosState extends State<AdminChamados> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Column(
       children: [
         TextFormField(
@@ -92,26 +104,47 @@ class _AdminChamadosState extends State<AdminChamados> {
           ),
         ),
         // Botões de Filtro
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 4),
-            child: Row(
-              children: [
-                Wrap(
-                  spacing: 8.0, // espaço horizontal entre os botões
-                  runSpacing: 4.0, // espaço vertical entre os botões
-                  children: categories.map((category) {
-                    return FilterButton(
-                      category: category,
-                      onFiltered: onFiltered,
-                    );
-                  }).toList(),
+        StreamBuilder(
+            stream: FirestoreProvider.getdocumentsStream('categories'),
+            builder: (context, AsyncSnapshot<List<Category>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                    'Erro ao carregar dados: ${snapshot.error}',
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                );
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text('Nenhuma categoria encontrada.'),
+                );
+              }
+
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 12, 8, 4),
+                  child: Row(
+                    children: [
+                      Wrap(
+                        spacing: 8.0, // espaço horizontal entre os botões
+                        runSpacing: 4.0, // espaço vertical entre os botões
+                        children: snapshot.data!.map((category) {
+                          return FilterButton(
+                            category: category.name,
+                            onFiltered: onFiltered,
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                 ),
-              ],
-            ),
-          ),
-        ),
+              );
+            }),
         Expanded(
           child: searchResults.isEmpty
               ? StreamBuilder<QuerySnapshot>(
@@ -128,10 +161,8 @@ class _AdminChamadosState extends State<AdminChamados> {
                         ),
                       );
                     }
-                    final prioritizedDocs =
-                        ReportController().prioritizeDocs(snapshot.data!.docs);
 
-                    final reportList = prioritizedDocs.map(
+                    final reportList = snapshot.data!.docs.map(
                       (doc) {
                         return ReportingModel.fromSnapshot(
                           doc as QueryDocumentSnapshot<Map<String, dynamic>>,

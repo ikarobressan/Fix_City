@@ -76,10 +76,10 @@ class ProfileScreen extends StatelessWidget {
           },
           child: Scaffold(
             appBar: AppBar(
-              leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: const Icon(LineAwesomeIcons.angle_left),
-              ),
+              // leading: IconButton(
+              //   onPressed: () => Get.back(),
+              //   icon: const Icon(LineAwesomeIcons.angle_left),
+              // ),
               title: Text(
                 profile,
                 style: Theme.of(context).textTheme.headlineMedium,
@@ -137,16 +137,16 @@ class ProfileScreen extends StatelessWidget {
                     const Gap(10),
 
                     /// -- MENU
-                    ProfileMenuWidget(
-                      title: "Configurações",
-                      icon: LineAwesomeIcons.cog,
-                      onPress: () {},
-                    ),
-                    ProfileMenuWidget(
-                      title: "Informações",
-                      icon: LineAwesomeIcons.info,
-                      onPress: () {},
-                    ),
+                    // ProfileMenuWidget(
+                    //   title: "Configurações",
+                    //   icon: LineAwesomeIcons.cog,
+                    //   onPress: () {},
+                    // ),
+                    // ProfileMenuWidget(
+                    //   title: "Informações",
+                    //   icon: LineAwesomeIcons.info,
+                    //   onPress: () {},
+                    // ),
                     ProfileMenuWidget(
                       title: "Sair",
                       icon: LineAwesomeIcons.alternate_sign_out,
