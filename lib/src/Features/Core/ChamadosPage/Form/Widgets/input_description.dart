@@ -27,7 +27,7 @@ class InputDescription extends StatelessWidget {
           children: [
             // Título do campo de entrada.
             Text(
-              'Descrição do Relato',
+              'Descrição',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
@@ -43,7 +43,7 @@ class InputDescription extends StatelessWidget {
           // Define o tipo de teclado como texto.
           keyBoardType: TextInputType.text,
           // Placeholder para o campo de entrada, indicando ao usuário o que é esperado.
-          hintText: 'Conte-nos mais sobre o problema',
+          hintText: 'Descrição do incidente',
           // Permite a entrada de múltiplas linhas (até 5 linhas).
           maxLines: 5,
           // Define o comprimento máximo de texto permitido (500 caracteres).

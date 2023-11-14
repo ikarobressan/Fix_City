@@ -7,11 +7,9 @@ import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:the_safe_city/src/Features/Authentication/Screens/UpdateOrRegister/update_or_register_screen.dart';
 
-// import '../../Constants/text_strings.dart';
 import '../../Features/Authentication/Models/user_model.dart';
 import '../../Features/Authentication/Screens/Welcome/home_page.dart';
 import '../../Features/Core/NavBar/navigation_bar.dart';
-// import '../../Utils/Helper/helper_controller.dart';
 import '../../Utils/Helper/helper_controller.dart';
 import 'Exceptions/exceptions.dart';
 import 'Result/login_result.dart';
@@ -41,14 +39,6 @@ class AuthenticationRepository extends GetxController {
   String get getDisplayName => firebaseUser?.displayName ?? "";
   String get getPhoneNo => firebaseUser?.phoneNumber ?? "";
 
-  //! Verifica se o usuário está logado ou não
-  // setInitialScreen(User? user) async {
-  //   user == null
-  //       ? Get.offAll(() => const WelcomeScreen())
-  //       : user.emailVerified
-  //           ? Get.offAll(() => const MyNavigationBar())
-  //           : Get.offAll(() => const MailVerification());
-  // }
 
   setInitialScreen(User? user) async {
     user == null
@@ -129,13 +119,20 @@ class AuthenticationRepository extends GetxController {
 
   /// [GoogleAuthentication] - GOOGLE
   Future<UserCredential?> signInWithGoogle() async {
+    GoogleSignInAccount? google;
     try {
       // Aciona a autenticação do Google
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      google = googleUser;
+    } catch (e) {
+      log('Erro de autenticação com Google: $e');
+      throw e;
+    }
 
+    try {
       // Obtem detalhes da requisição
       final GoogleSignInAuthentication? googleAuth =
-          await googleUser?.authentication;
+          await google?.authentication;
 
       // Cria uma nova credencial
       final credential = GoogleAuthProvider.credential(
@@ -208,7 +205,7 @@ class AuthenticationRepository extends GetxController {
   Future<void> logout() async {
     try {
       await GoogleSignIn().signOut();
-      await FacebookAuth.instance.logOut();
+      //await FacebookAuth.instance.logOut();
       await FirebaseAuth.instance.signOut();
       Get.offAll(() => const WelcomeScreen());
     } on FirebaseAuthException catch (e) {

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -39,13 +40,13 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
 
   void _loadImages() async {
     imageUrls = await reportController.getChamadoImage(
-      widget.reportingModel.chamadoId,
-      widget.reportingModel.userId,
+      widget.reportingModel.chamadoId!,
+      widget.reportingModel.userId!,
     );
     log('Imagens recuperadas: $imageUrls');
     videoUrls = await reportController.getChamadoVideo(
-      widget.reportingModel.chamadoId,
-      widget.reportingModel.userId,
+      widget.reportingModel.chamadoId!,
+      widget.reportingModel.userId!,
     );
     log('Videos recuperados: $videoUrls');
     // Atualizar o estado para refletir as mudanças
@@ -64,6 +65,14 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController = Get.find();
+    List<String> statusMessageList = [
+      "Enviado",
+      "Em andamento",
+      "Encerrado",
+      "Cancelado"
+    ];
+    dynamic activeStep = statusMessageList
+        .indexOf(widget.reportingModel.statusMessage.toString());
     log('Imagens recuperadas: $imageUrls');
     final isDark = themeController.isDarkMode.value;
 
@@ -89,6 +98,46 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                 // Data do Chamado
                 Column(
                   children: [
+                    EasyStepper(
+                      activeStep: activeStep,
+                      padding: const EdgeInsetsDirectional.symmetric(
+                        horizontal: 30,
+                        vertical: 20,
+                      ),
+                      internalPadding: 0,
+                      activeStepTextColor: Colors.green,
+                      activeStepBackgroundColor: Colors.green,
+                      activeStepIconColor: Colors.green,
+                      finishedStepTextColor: Colors.black,
+                      finishedStepBackgroundColor: Colors.green,
+                      disableScroll: true,
+                      showLoadingAnimation: false,
+                      stepRadius: 15,
+                      lineStyle: const LineStyle(
+                        lineLength: 70,
+                        lineType: LineType.normal,
+                        defaultLineColor: Colors.grey,
+                        finishedLineColor: Colors.green,
+                      ),
+                      steps: List.generate(
+                          statusMessageList.length,
+                          (index) => EasyStep(
+                                customStep: CircleAvatar(
+                                  radius: 8,
+                                  backgroundColor: Colors.green,
+                                  child: CircleAvatar(
+                                    radius: 7,
+                                    backgroundColor: activeStep >= index
+                                        ? activeStep == statusMessageList.length
+                                            ? Colors.red
+                                            : Colors.green
+                                        : Colors.grey,
+                                  ),
+                                ),
+                                title: statusMessageList[index],
+                              )),
+                    ),
+                    const Gap(5),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -135,7 +184,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.address,
+                        widget.reportingModel.address!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
@@ -163,7 +212,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.addressNumber,
+                        widget.reportingModel.addressNumber!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
@@ -191,7 +240,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.cep,
+                        widget.reportingModel.cep!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
@@ -219,7 +268,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.referPoint,
+                        widget.reportingModel.referPoint!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
@@ -247,7 +296,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.description,
+                        widget.reportingModel.description!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
@@ -276,14 +325,13 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.category.categoryDescription,
+                        widget.reportingModel.category!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),
                   ],
                 ),
-                if (widget.reportingModel.category.categoryDescription ==
-                    'Outro') ...[
+                if (widget.reportingModel.category == 'Outro') ...[
                   const Gap(12),
                   // Categoria Definida
                   Column(
@@ -306,7 +354,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
-                          widget.reportingModel.definicaoCategoria,
+                          widget.reportingModel.definicaoCategoria!,
                           style: Theme.of(context).textTheme.headlineMedium,
                         ),
                       ),
@@ -336,7 +384,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
-                        widget.reportingModel.statusMessage,
+                        widget.reportingModel.statusMessage!,
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ),

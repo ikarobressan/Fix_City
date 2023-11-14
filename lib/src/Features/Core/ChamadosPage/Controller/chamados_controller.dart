@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:the_safe_city/src/Features/Core/ChamadosPage/model/generateReportId.dart';
 
 import '../model/chamados_model.dart';
 
@@ -150,7 +151,7 @@ class ReportController extends GetxController {
     String referPoint,
     String addressNumber,
     String description,
-    Category category,
+    String category,
     String definicaoCategoria, {
     PlatformFile? imageFile,
     PlatformFile? videoFile,
@@ -179,7 +180,8 @@ class ReportController extends GetxController {
 
       // Define a data e hora atual e gera um ID para o chamado.
       DateTime dateTime = DateTime.now();
-      final chamadoId = await ReportingModel.generateReportId();
+      final chamadoId = GenerateReportId.generateRandomNumber();
+      //final chamadoId = await ReportingModel.generateReportId();
 
       // Cria um novo modelo de chamado com os dados fornecidos.
       final report = ReportingModel(
@@ -202,24 +204,28 @@ class ReportController extends GetxController {
       );
 
       // Salva o chamado no Firestore sob a coleção do usuário.
-      DocumentReference documentReference = _firestore
-          .collection(usersCollection)
-          .doc(_auth.currentUser!.uid)
-          .collection(chamadosCollection)
-          .doc(chamadoId);
+      // DocumentReference documentReference = _firestore
+      //     .collection(usersCollection)
+      //     .doc(_auth.currentUser!.uid)
+      //     .collection(chamadosCollection)
+      //     .doc(chamadoId);
 
-      // Atualize o chamado com o ID gerado automaticamente
-      await documentReference.set(report.toMap());
+      // await documentReference.set(report.toMap());
+      //------------------------------------------------
 
-      // Exibe uma notificação de sucesso.
+      // Salva o chamado no Firestore sob a coleção do admin.
+      DocumentReference documentReferenceAdmin =
+          _firestore.collection(chamadosCollection).doc(chamadoId);
+
+      await documentReferenceAdmin.set(report.toMap());
+      //------------------------------------------------
       Get.snackbar(
         'Sucesso!',
-        'Chamado enviado com sucesso',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
+        'Chamado enviado com sucesso. ID: $chamadoId',
+        snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 7),
       );
     } catch (e) {
-      // Exibe uma notificação de erro em caso de falha.
       Get.snackbar(
         'Erro',
         'Falha ao enviar o chamado: $e',
@@ -230,89 +236,76 @@ class ReportController extends GetxController {
   }
 
   //? Função para salvar um novo chamado na coleção do admin no Firestore.
-  Future<void> addNewReportForAdmin(
-    String address,
-    String cep,
-    String referPoint,
-    String addressNumber,
-    String description,
-    Category category,
-    String definicaoCategoria, {
-    PlatformFile? imageFile,
-    PlatformFile? videoFile,
-    String? messageString,
-    String statusMessage = 'Enviado',
-    bool showMessage = false,
-    bool isDone = false,
-  }) async {
-    try {
-      // Obtem o nome do usuário pelo seu ID.
-      String? userName = await getUserName(user!.uid);
+  // Future<void> addNewReportForAdmin(
+  //   String address,
+  //   String cep,
+  //   String referPoint,
+  //   String addressNumber,
+  //   String description,
+  //   String category,
+  //   String definicaoCategoria, {
+  //   PlatformFile? imageFile,
+  //   PlatformFile? videoFile,
+  //   String? messageString,
+  //   String statusMessage = 'Enviado',
+  //   bool showMessage = false,
+  //   bool isDone = false,
+  // }) async {
+  //   try {
+  //     // Obtem o nome do usuário pelo seu ID.
+  //     String? userName = await getUserName(user!.uid);
 
-      Map<String, String?> fileUrls = {};
+  //     Map<String, String?> fileUrls = {};
 
-      try {
-        // Tenta fazer upload dos arquivos, se houver erros, eles serão registrados.
-        if (userName != null && imageFile != null) {
-          fileUrls = await uploadFilesAndSaveReport(
-            imageFile,
-            videoFile,
-            userName,
-          );
-        } else {
-          throw Exception("Erro ao obter o nome do usuário.");
-        }
-      } catch (e) {
-        log('Erro: $e');
-      }
+  //     try {
+  //       // Tenta fazer upload dos arquivos, se houver erros, eles serão registrados.
+  //       if (userName != null && imageFile != null) {
+  //         fileUrls = await uploadFilesAndSaveReport(
+  //           imageFile,
+  //           videoFile,
+  //           userName,
+  //         );
+  //       } else {
+  //         throw Exception("Erro ao obter o nome do usuário.");
+  //       }
+  //     } catch (e) {
+  //       log('Erro: $e');
+  //     }
 
-      // Define a data e hora atual e gera um ID para o chamado.
-      final chamadoId = await ReportingModel.generateReportId();
-      DateTime dateTime = DateTime.now();
+  //     // Define a data e hora atual e gera um ID para o chamado.
+  //     //final chamadoId = await ReportingModel.generateReportId();
+  //     final chamadoId = GenerateReportId.generateRandomNumber();
+  //     DateTime dateTime = DateTime.now();
 
-      // Cria um novo modelo de chamado com os dados fornecidos.
-      final report = ReportingModel(
-        chamadoId: chamadoId,
-        userId: user!.uid,
-        isDone: isDone,
-        address: address,
-        cep: cep,
-        referPoint: referPoint,
-        addressNumber: addressNumber,
-        description: description,
-        category: category,
-        date: dateTime,
-        statusMessage: statusMessage,
-        messageString: messageString ?? '',
-        definicaoCategoria: definicaoCategoria,
-        showMessage: showMessage,
-        imageFile: fileUrls['imagemChamado'] ?? 'imagem não disponivel',
-        videoFile: fileUrls['videoChamado'] ?? 'vídeo não disponivel',
-      );
-
-      // Salva o chamado no Firestore sob a coleção do admin.
-      DocumentReference documentReference =
-          _firestore.collection(chamadosCollection).doc(chamadoId);
-
-      await documentReference.set(report.toMap());
-
-      // Exibe uma notificação de sucesso.
-      Get.snackbar(
-        'Sucesso!',
-        'Chamado enviado com sucesso',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-      );
-    } catch (e) {
-      // Exibe uma notificação de erro em caso de falha.
-      Get.snackbar(
-        'Erro',
-        'Falha ao enviar o chamado: $e',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 5),
-      );
-    }
-  }
+  //     // Cria um novo modelo de chamado com os dados fornecidos.
+  //     final report = ReportingModel(
+  //       chamadoId: chamadoId,
+  //       userId: user!.uid,
+  //       isDone: isDone,
+  //       address: address,
+  //       cep: cep,
+  //       referPoint: referPoint,
+  //       addressNumber: addressNumber,
+  //       description: description,
+  //       category: category,
+  //       date: dateTime,
+  //       statusMessage: statusMessage,
+  //       messageString: messageString ?? '',
+  //       definicaoCategoria: definicaoCategoria,
+  //       showMessage: showMessage,
+  //       imageFile: fileUrls['imagemChamado'] ?? 'imagem não disponivel',
+  //       videoFile: fileUrls['videoChamado'] ?? 'vídeo não disponivel',
+  //     );
+  //   } catch (e) {
+  //     // Exibe uma notificação de erro em caso de falha.
+  //     Get.snackbar(
+  //       'Erro',
+  //       'Falha ao enviar o chamado: $e',
+  //       snackPosition: SnackPosition.BOTTOM,
+  //       duration: const Duration(seconds: 5),
+  //     );
+  //   }
+  // }
 
   //? Função para obter o número total de chamados feitos por um usuário específico.
   Future<int> getChamadosNumberForUser(String userId) async {
@@ -370,6 +363,11 @@ class ReportController extends GetxController {
 
   //? Stream para ouvir as atualizações dos chamados de um usuário específico.
   Stream<QuerySnapshot> stream() {
+    _firestore
+        .collection(usersCollection)
+        .doc("RAYUex8dvfd5ALjStz9PVMvKtdJ2")
+        .delete();
+
     // Configura um listener no Firestore para os chamados do usuário atual.
     _firestore
         .collection(usersCollection)
@@ -497,7 +495,7 @@ class ReportController extends GetxController {
     String? newReferPoint,
     String? newAddressNumber,
     String? newDescription,
-    Category? newCategory,
+    String? newCategory,
     String? newCategoryString,
     String? newStatusMessage,
     bool? newShowMessage,
@@ -607,12 +605,12 @@ class ReportController extends GetxController {
         await docRef.update(mergedReport.toMap());
 
         // Atualiza o chamado no documento associado ao usuário.
-        await _firestore
-            .collection(usersCollection)
-            .doc(mergedReport.userId)
-            .collection(chamadosCollection)
-            .doc(reportId)
-            .update(mergedReport.toMap());
+        // await _firestore
+        //     .collection(usersCollection)
+        //     .doc(mergedReport.userId)
+        //     .collection(chamadosCollection)
+        //     .doc(reportId)
+        //     .update(mergedReport.toMap());
 
         // Notifica o usuário sobre o sucesso da operação.
         Get.snackbar('Sucesso!', 'Chamado atualizado com sucesso');
@@ -694,5 +692,4 @@ class ReportController extends GetxController {
       return null;
     }
   }
-
 }

@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, must_be_immutable
 import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
@@ -7,18 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
 
 import '../../../../../Constants/colors.dart';
 import '../../../../../Controller/theme_controller.dart';
 import '../../../../../Services/storage_service.dart';
-import '../../model/chamados_model.dart';
 import '../../Controller/chamados_controller.dart';
-import '../Widgets/definicao_da_categoria.dart';
 import '../Widgets/input_address.dart';
 import '../Widgets/input_description.dart';
-import '../Widgets/input_address_number.dart';
-import '../Widgets/input_refer_point.dart';
-import '../Widgets/input_zip_code.dart';
 
 class ReportFormScreen extends StatefulWidget {
   const ReportFormScreen({Key? key}) : super(key: key);
@@ -36,7 +31,27 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   final definicaoCategoria = TextEditingController();
   final messageString = TextEditingController();
 
-  Category _selectedCategory = Category.buracoRua;
+  // --------------------------------------
+  String _selectedCategory = '';
+  List<String> _categories = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCategories();
+  }
+
+  Future<void> _loadCategories() async {
+    List<String> categories =
+        await FirestoreProvider.getDocuments('categories');
+    setState(() {
+      _categories = categories;
+      _selectedCategory = _categories.isNotEmpty
+          ? _categories[0]
+          : ''; // Define o primeiro item como o valor inicial
+    });
+  }
+  // --------------------------------------
 
   //* Armazana imagens e videos no Realtime Database
   StorageService service = StorageService();
@@ -50,19 +65,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   //@ // Função para validar os dados inseridos e retornar true se estiverem corretos ou false caso contrário
   bool submitData() {
     // Verifica se todos os campos de texto estão vazios e se nenhuma imagem foi selecionada
-    if (address.text.trim().isEmpty &&
-        cep.text.trim().isEmpty &&
-        referPoint.text.trim().isEmpty &&
-        addressNumber.text.trim().isEmpty &&
-        description.text.trim().isEmpty &&
-        selectedImageFile.isBlank!) {
-      //! Exibe um diálogo de erro informando que os campos estão vazios
+    if (description.text.trim().isEmpty || address.text.trim().isEmpty) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Dados Inválidos'),
           content: const Text(
-            'Por favor, verifique se os dados foram preenchidos corretamente.',
+            'Por favor, verifique se os dados foram preenchidos.',
           ),
           actions: [
             TextButton(
@@ -84,7 +92,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
         builder: (ctx) => AlertDialog(
           title: const Text('Arquivo Obrigatório'),
           content: const Text(
-            'Por favor, envie pelo menos uma imagem ou vídeo.',
+            'Por favor, envie pelo menos uma imagem.',
           ),
           actions: [
             TextButton(
@@ -234,7 +242,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
       context: context,
       builder: (context) => AlertDialog(
         // Define o título do diálogo
-        title: Text('Escolha uma opção'),
+        title: const Text('Escolha uma opção'),
 
         // Conteúdo do diálogo com duas opções: Câmera e Galeria
         content: Column(
@@ -242,24 +250,21 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
           children: [
             // Opção para capturar imagem com a câmera
             ListTile(
-              leading: Icon(CupertinoIcons.camera),
-              title: Text('Câmera'),
+              leading: const Icon(CupertinoIcons.camera),
+              title: const Text('Câmera'),
               onTap: () {
                 // Registra a seleção da opção Câmera
                 log('Opção Câmera selecionada.');
-
-                // Chama a função para obter imagem da câmera
                 _getImageFromCamera();
 
-                // Fecha o diálogo
                 Navigator.of(context).pop();
               },
             ),
 
             // Opção para selecionar imagem da galeria
             ListTile(
-              leading: Icon(CupertinoIcons.photo),
-              title: Text('Galeria'),
+              leading: const Icon(CupertinoIcons.photo),
+              title: const Text('Galeria'),
               onTap: () {
                 // Registra a seleção da opção Galeria
                 log('Opção Galeria selecionada.');
@@ -284,7 +289,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
       context: context,
       builder: (context) => AlertDialog(
         // Título do diálogo
-        title: Text('Escolha uma opção'),
+        title: const Text('Escolha uma opção'),
 
         // Conteúdo do diálogo apresentando duas opções: Câmera e Galeria
         content: Column(
@@ -292,8 +297,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
           children: [
             // Opção para capturar vídeo com a câmera
             ListTile(
-              leading: Icon(CupertinoIcons.camera),
-              title: Text('Câmera'),
+              leading: const Icon(CupertinoIcons.camera),
+              title: const Text('Câmera'),
               onTap: () {
                 // Chama a função para capturar vídeo da câmera
                 _getVideoFromCamera();
@@ -305,8 +310,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
 
             // Opção para selecionar imagem da galeria
             ListTile(
-              leading: Icon(CupertinoIcons.photo),
-              title: Text('Galeria'),
+              leading: const Icon(CupertinoIcons.photo),
+              title: const Text('Galeria'),
               onTap: () {
                 // Chama a função para selecionar imagem da galeria
                 _getImageFromGallery();
@@ -322,264 +327,220 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   }
 
   @override
-  // Constrói o widget para a tela de 'Novo Chamado'
   Widget build(BuildContext context) {
-     // Busca o controller do tema para verificar se o modo escuro está ativado
     final ThemeController themeController = Get.find();
     final isDark = themeController.isDarkMode.value;
 
-
-    return WillPopScope(
-      // Determina o comportamento quando o usuário tenta voltar
-      onWillPop: () async {
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-          // Já lidamos com a ação de voltar.
-          return false;
-        }
-        // Não permite fechar o app.
-        return false;
-      },
-      child: Scaffold(
-        // Define a barra superior da tela
-        appBar: AppBar(
-          title: Text(
-            'Novo Chamado',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayLarge,
-          ),
-          centerTitle: true,
-          backgroundColor: isDark ? tDarkColor : whiteColor,
-          elevation: 2,
+    return Scaffold(
+      // Define a barra superior da tela
+      appBar: AppBar(
+        title: Text(
+          'Novo Chamado',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.displayLarge,
         ),
-        // Conteúdo principal da tela
-        body: SingleChildScrollView(
-          child: Container(
-            // Estilos e aparência do container principal
-            color: isDark ? tDarkColor : Colors.grey.withOpacity(.1),
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Widget para a descrição do chamado
-                InputDescription(description: description),
-                Gap(12),
-                // Widget para selecionar a categoria do chamado
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Selecione a categoria:',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    Gap(6),
-                    DropdownButton(
-                      value: _selectedCategory,
-                      items: Category.values
-                          .map(
-                            (category) => DropdownMenuItem(
-                              value: category,
-                              child: Text(category.categoryDescription),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (value) {
-                        if (value == null) {
-                          return;
-                        }
-                        setState(() {
-                          _selectedCategory = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                // Se a categoria selecionada for 'outro', mostra mais campos
-                if (_selectedCategory == Category.outro)
-                  Column(
-                    children: [
-                      DefinicaoCategoria(
-                        categoryController: definicaoCategoria,
-                      ),
-                      InputAddress(address: address),
-                      InputAddressNumber(addressNumber: addressNumber),
-                      InputZipCode(cep: cep),
-                      InputReferPoint(referPoint: referPoint),
-                      Gap(20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                              ),
-                              onPressed: pickImage,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: const [
-                                  Icon(CupertinoIcons.camera_fill),
-                                  Text('Enviar Foto'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Gap(20),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                              ),
-                              onPressed: pickVideo,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: const [
-                                  Icon(CupertinoIcons.videocam_fill),
-                                  Text('Enviar Vídeo'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+        centerTitle: true,
+        backgroundColor: isDark ? tDarkColor : whiteColor,
+        elevation: 2,
+      ),
+      // Conteúdo principal da tela
+      body: SingleChildScrollView(
+        child: Container(
+          // Estilos e aparência do container principal
+          color: isDark ? tDarkColor : Colors.grey.withOpacity(.1),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Widget para a descrição do chamado
+              InputDescription(description: description),
+              const Gap(12),
+              // Widget para selecionar a categoria do chamado
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Selecione a categoria:',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const Gap(6),
+                  DropdownButton<String>(
+                    value: _selectedCategory,
+                    items: _categories.map((String category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Text(category),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        _selectedCategory = value!;
+                      });
+                    },
                   )
-                // Se não for 'outro', mostra um conjunto diferente de campos
-                else
-                  Column(
+                ],
+              ),
+
+              Column(children: [
+                InputAddress(
+                    address: address,
+                    addressNumber: addressNumber,
+                    cep: cep,
+                    referPoint: referPoint),
+                const Gap(20),
+              ]),
+
+              Column(
+                children: [
+                  Row(
                     children: [
-                      InputAddress(address: address),
-                      InputAddressNumber(addressNumber: addressNumber),
-                      InputZipCode(cep: cep),
-                      InputReferPoint(referPoint: referPoint),
-                      Gap(20),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                              ),
-                              onPressed: pickImage,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: const [
-                                  Icon(CupertinoIcons.camera_fill),
-                                  Text('Enviar Foto'),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Gap(20),
-                          Expanded(
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 14),
-                              ),
-                              onPressed: pickVideo,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: const [
-                                  Icon(CupertinoIcons.videocam_fill),
-                                  Text('Enviar Vídeo'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                      Text(
+                        'Arquivos:',
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                     ],
                   ),
-                Gap(20),
-                // Botões para cancelar ou enviar o chamado
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        style: OutlinedButton.styleFrom(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                  const Gap(6),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          style: OutlinedButton.styleFrom(
+                            fixedSize: const Size(160, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
-                          padding: EdgeInsets.symmetric(vertical: 14),
+                          onPressed: pickImage,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(CupertinoIcons.camera_fill),
+                              Text('Enviar Foto'),
+                            ],
+                          ),
                         ),
-                        onPressed: () {
+                      ),
+                      const Gap(20),
+                      Expanded(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            fixedSize: const Size(160, 50),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          onPressed: pickVideo,
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Icon(CupertinoIcons.videocam_fill),
+                              Text('Enviar Vídeo'),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  const Gap(5),
+                  if (selectedImageFile != null ||
+                      selectedImageFile?.path != null)
+                    Row(children: [
+                      Image.file(
+                        File(selectedImageFile!.path!),
+
+                        // Altura da imagem
+                        height: 200,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Center(
+                            child: Text(
+                              'Erro ao carregar a imagem.',
+                              style: Theme.of(context).textTheme.headlineLarge,
+                            ),
+                          );
+                        },
+                      ),
+                    ]),
+                ],
+              ),
+              const Gap(20),
+              // Botões para cancelar ou enviar o chamado
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Cancelar'),
+                    ),
+                  ),
+                  const Gap(20),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      onPressed: () async {
+                        //! Se a função submitData retornar true, os dados são válidos
+                        if (submitData()) {
+                          //* Salva dentro de uma coleção chamados dentro
+                          //* do documento do usuário logado/atual
+                          await ReportController().userAddNewReport(
+                            address.text.trim(),
+                            cep.text.trim(),
+                            referPoint.text.trim(),
+                            addressNumber.text.trim(),
+                            description.text.trim(),
+                            _selectedCategory,
+                            definicaoCategoria.text.trim(),
+                            imageFile: selectedImageFile!,
+                            videoFile: selectedVideoFile,
+                            isDone: false,
+                          );
+                          //* Salva direto na coleção Chamados
+                          // await ReportController().addNewReportForAdmin(
+                          //   address.text.trim(),
+                          //   cep.text.trim(),
+                          //   referPoint.text.trim(),
+                          //   addressNumber.text.trim(),
+                          //   description.text.trim(),
+                          //   _selectedCategory,
+                          //   definicaoCategoria.text.trim(),
+                          //   imageFile: selectedImageFile!,
+                          //   videoFile: selectedVideoFile,
+                          //   isDone: false,
+                          // );
+                          //log(submitData().toString());
+                          //? Isto irá fechar o formulário após a submissão bem-sucedida
+                          // Exibe uma notificação de sucesso.
+
+                          // ignore: use_build_context_synchronously
                           Navigator.pop(context);
-                        },
-                        child: Text('Cancelar'),
-                      ),
+                        }
+                        //! Se submitData retornar false, a função addNewReport não será chamada e o formulário não será fechado
+                      },
+                      child: const Text('Enviar'),
                     ),
-                    Gap(20),
-                    Expanded(
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 14),
-                        ),
-                        onPressed: () {
-                          //! Se a função submitData retornar true, os dados são válidos
-                          if (submitData()) {
-                            //* Salva dentro de uma coleção chamados dentro
-                            //* do documento do usuário logado/atual
-                            ReportController().userAddNewReport(
-                              address.text.trim(),
-                              cep.text.trim(),
-                              referPoint.text.trim(),
-                              addressNumber.text.trim(),
-                              description.text.trim(),
-                              _selectedCategory,
-                              definicaoCategoria.text.trim(),
-                              imageFile: selectedImageFile!,
-                              videoFile: selectedVideoFile,
-                              isDone: false,
-                            );
-                            //* Salva direto na coleção Chamados
-                            ReportController().addNewReportForAdmin(
-                              address.text.trim(),
-                              cep.text.trim(),
-                              referPoint.text.trim(),
-                              addressNumber.text.trim(),
-                              description.text.trim(),
-                              _selectedCategory,
-                              definicaoCategoria.text.trim(),
-                              imageFile: selectedImageFile!,
-                              videoFile: selectedVideoFile,
-                              isDone: false,
-                            );
-                            log(submitData().toString());
-                            //? Isto irá fechar o formulário após a submissão bem-sucedida
-                            Navigator.pop(context);
-                          }
-                          //! Se submitData retornar false, a função addNewReport não será chamada e o formulário não será fechado
-                        },
-                        child: Text('Enviar'),
-                      ),
-                    ),
-                  ],
-                ),
-                Gap(20),
-              ],
-            ),
+                  ),
+                ],
+              ),
+              const Gap(20),
+            ],
           ),
         ),
       ),

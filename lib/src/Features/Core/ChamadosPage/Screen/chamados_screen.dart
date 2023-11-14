@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:the_safe_city/src/Features/Core/Category/provider/fireauth_provider.dart';
+import 'package:the_safe_city/src/Features/Core/ChamadosPage/Screen/UserPage/user_chamados_screenNew.dart';
 import '../../../../CommomWidgets/Buttons/primary_button.dart';
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
@@ -10,7 +13,6 @@ import '../../../Authentication/Models/user_model.dart';
 import '../Controller/user_controller.dart';
 import '../Widgets/chamados_page_body_header.dart';
 import 'AdminPage/admin_chamados_screen.dart';
-import 'UserPage/user_chamados_screen.dart';
 
 class ChamadosScreen extends StatefulWidget {
   const ChamadosScreen({this.userModel, this.reportingModel, super.key});
@@ -28,7 +30,7 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
     return await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('Você desja sair?'),
+            title: const Text('Você deseja sair?'),
             content: const Text(
               'Você realmente deseja sair do aplicativo?',
             ),
@@ -63,6 +65,15 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
     final month = currentDate.month;
     final year = currentDate.year;
     String formattedDate = "$day/$month/$year";
+    User? usuarioLogado = FireauthProvider.getCurrentUser();
+
+    if (usuarioLogado != null) {
+      // Faça algo com o usuário logado
+      print('Usuário logado: ${usuarioLogado.email}');
+    } else {
+      // Não há usuário logado
+      print('Nenhum usuário logado.');
+    }
 
     // Widget observável que reage às mudanças de estado (mudanças no modo escuro/claro)
     return Obx(
@@ -97,7 +108,7 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
                   stream: userController.userStream,
                   builder: (context, snapshot) {
                     final user = snapshot.data;
-                    bool isAdmin = user?.isAdmin ?? false;
+                    // bool isAdmin = user?.isAdmin ?? false;
                     if (user == null) {
                       return const Text('Nome de usuário não disponivel');
                     } else {
@@ -109,7 +120,7 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
                           child: Image.asset('assets/images/avatar.png'),
                         ),
                         title: Text(
-                          isAdmin ? 'Olá, Bem-Vindo Adm' : 'Olá, Bem-Vindo',
+                          'Olá, Bem-Vindo!',
                           style: Theme.of(context).textTheme.titleSmall,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -124,27 +135,13 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
 
                 // Ações na barra de aplicativos (calendário e notificações)
                 actions: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            CupertinoIcons.calendar,
-                            color: isDark ? tWhiteColor : tDarkColor,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            CupertinoIcons.bell,
-                            color: isDark ? tWhiteColor : tDarkColor,
-                          ),
-                        ),
-                      ],
+                  IconButton(
+                    onPressed: themeController.toggleTheme,
+                    icon: Icon(
+                      isDark ? LineAwesomeIcons.moon : LineAwesomeIcons.sun,
                     ),
-                  ),
+                    iconSize: 26,
+                  )
                 ],
               ),
 
@@ -166,7 +163,9 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
                           // Mostra chamados para admin ou usuário comum
                           return isAdmin
                               ? AdminChamados(widget: widget) // True
-                              : UserChamados(widget: widget); // False
+                              : UserChamadosNew(
+                                  widget: widget,
+                                  usuarioLogado: usuarioLogado); // False
                         },
                       ),
                     ),

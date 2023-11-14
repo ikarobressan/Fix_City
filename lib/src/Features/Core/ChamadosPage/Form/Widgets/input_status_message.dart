@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import '../../../../../Utils/Widgets/input_text_field.dart';
 
 class InputStatusMessage extends StatelessWidget {
-  
   // Construtor que inicializa o widget com um `TextEditingController`.
   const InputStatusMessage({super.key, required this.statusMessage});
 
@@ -15,10 +14,9 @@ class InputStatusMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        
         // Espaçamento vertical.
         const Gap(12),
-        
+
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -29,10 +27,10 @@ class InputStatusMessage extends StatelessWidget {
             ),
           ],
         ),
-        
+
         // Espaçamento vertical.
         const Gap(6),
-        
+
         // Campo de entrada personalizado para inserção do status do chamado.
         InputTextField(
           // Passando o controlador para o widget.
@@ -48,7 +46,7 @@ class InputStatusMessage extends StatelessWidget {
           // Função para validar a entrada. Retorna uma mensagem de erro se o valor for em branco.
           // Nota: A mensagem de erro parece não estar correta, considerando o contexto do widget.
           onValidator: (value) {
-            return value.isBlank ? 'Insira um ponto de Referência' : null;
+            return null;
           },
         ),
       ],

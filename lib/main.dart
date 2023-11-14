@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_config/flutter_config.dart';
 import 'package:get/get.dart';
@@ -9,7 +11,7 @@ import 'src/Repository/AuthenticationRepository/authentication_repository.dart';
 import 'src/firebase_options.dart';
 import 'src/app.dart';
 
-Future<void> main() async {
+void main() async {
   // Garante a inicialização do binding de widgets do Flutter
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -20,6 +22,8 @@ Future<void> main() async {
       AuthenticationRepository(),
     ),
   );
+
+  //createdUserAdmin();
 
   // Carrega variáveis de ambiente usando FlutterConfig
   await FlutterConfig.loadEnvVariables();
@@ -32,4 +36,41 @@ Future<void> main() async {
 
   // Inicia o aplicativo
   runApp(MyApp());
+}
+
+void createdUserAdmin() async {
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  var emailAdmin = 'admin@admin.com';
+  var senhaAdmin = 'Admin@123';
+
+  // Instância do repositório de autenticação.
+  final auth = AuthenticationRepository();
+
+  // Registra o usuário no Firebase usando e-mail e senha.
+  try {
+    await auth.registerWithEmailAndPassword(
+      emailAdmin,
+      senhaAdmin,
+    );
+    await firestore.collection('Users').doc(firebaseAuth.currentUser!.uid).set({
+      "id": firebaseAuth.currentUser!.uid,
+      "E-mail": 'admin@admin.com',
+      "Nome Completo": 'admin',
+      "Numero de Telefone": '',
+      "CPF": '',
+      "Admin": true,
+    }).catchError(
+      (e) => log('Erro ao criar coleção: $e'),
+    );
+    await firebaseAuth.signOut();
+
+    log("== User admin not existe, created");
+  } catch (e) {
+    if (e == 'O e-mail informado já possui um cadastro.') {
+      log("== User admin existe");
+      await firebaseAuth.signOut();
+    }
+  }
 }

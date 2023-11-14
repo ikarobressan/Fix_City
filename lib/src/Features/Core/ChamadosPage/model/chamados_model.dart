@@ -10,20 +10,20 @@ final formatter = DateFormat('dd/MM/yyyy');
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 // Enum para categorias de problemas
-enum Category {
-  buracoRua,
-  buracoCalcada,
-  posteQueimado,
-  bueiroEntupido,
-  iluminacaoInadequada,
-  sinalizacaoInadequada,
-  lixoAcumulado,
-  vazamentoAgua,
-  obstrucaoVia,
-  arvoreCaida,
-  pichacao,
-  outro,
-}
+// enum Category {
+//   buracoRua,
+//   buracoCalcada,
+//   posteQueimado,
+//   bueiroEntupido,
+//   iluminacaoInadequada,
+//   sinalizacaoInadequada,
+//   lixoAcumulado,
+//   vazamentoAgua,
+//   obstrucaoVia,
+//   arvoreCaida,
+//   pichacao,
+//   outro,
+// }
 
 // Obtém a data atual
 DateTime currentDate = DateTime.now();
@@ -33,108 +33,108 @@ String formattedDate =
     "${currentDate.day.toString().padLeft(2, '0')}/${currentDate.month}/${currentDate.year}";
 
 // Extensão do enum Category para obter descrições humanas-legíveis
-extension CategoryExtension on Category {
-  String get categoryDescription {
-    switch (this) {
-      case Category.buracoRua:
-        return 'Buraco na rua';
-      case Category.buracoCalcada:
-        return 'Buraco na calçada';
-      case Category.posteQueimado:
-        return 'Luz do Poste Queimada';
-      case Category.bueiroEntupido:
-        return 'Bueiro Emtupido';
-      case Category.iluminacaoInadequada:
-        return 'Iluminação Inadequada';
-      case Category.sinalizacaoInadequada:
-        return 'Sinalização Inadequada';
-      case Category.lixoAcumulado:
-        return 'Lixo Acumulado';
-      case Category.vazamentoAgua:
-        return 'Vazamento de Água';
-      case Category.obstrucaoVia:
-        return 'Obstrução na Via';
-      case Category.arvoreCaida:
-        return 'Árvore Caída';
-      case Category.pichacao:
-        return 'Pichação';
-      case Category.outro:
-        return 'Outro';
-    }
-  }
-}
+// extension CategoryExtension on Category {
+//   String get categoryDescription {
+//     switch (this) {
+//       case Category.buracoRua:
+//         return 'Buraco na rua';
+//       case Category.buracoCalcada:
+//         return 'Buraco na calçada';
+//       case Category.posteQueimado:
+//         return 'Luz do Poste Queimada';
+//       case Category.bueiroEntupido:
+//         return 'Bueiro Emtupido';
+//       case Category.iluminacaoInadequada:
+//         return 'Iluminação Inadequada';
+//       case Category.sinalizacaoInadequada:
+//         return 'Sinalização Inadequada';
+//       case Category.lixoAcumulado:
+//         return 'Lixo Acumulado';
+//       case Category.vazamentoAgua:
+//         return 'Vazamento de Água';
+//       case Category.obstrucaoVia:
+//         return 'Obstrução na Via';
+//       case Category.arvoreCaida:
+//         return 'Árvore Caída';
+//       case Category.pichacao:
+//         return 'Pichação';
+//       case Category.outro:
+//         return 'Outro';
+//     }
+//   }
+// }
 
-// Função para mapear uma string para um enum de Categoria
-Category getCategoryFromString(String category) {
-  switch (category) {
-    case 'Buraco na rua':
-      return Category.buracoRua;
-    case 'Buraco na calçada':
-      return Category.buracoCalcada;
-    case 'Luz do Poste Queimada':
-      return Category.posteQueimado;
-    case 'Bueiro Entupido':
-      return Category.bueiroEntupido;
-    case 'Iluminação Inadequada':
-      return Category.iluminacaoInadequada;
-    case 'Sinalização Inadequada':
-      return Category.sinalizacaoInadequada;
-    case 'Lixo Acumulado':
-      return Category.lixoAcumulado;
-    case 'Vazamento de Água':
-      return Category.vazamentoAgua;
-    case 'Obstrução na Via':
-      return Category.obstrucaoVia;
-    case 'Árvore Caída':
-      return Category.arvoreCaida;
-    case 'Pichação':
-      return Category.pichacao;
-    case 'Outro':
-      return Category.outro;
-    default:
-      return Category.buracoRua; // Padrão para 'Buraco na rua'
-  }
-}
+// // Função para mapear uma string para um enum de Categoria
+// Category getCategoryFromString(String category) {
+//   switch (category) {
+//     case 'Buraco na rua':
+//       return Category.buracoRua;
+//     case 'Buraco na calçada':
+//       return Category.buracoCalcada;
+//     case 'Luz do Poste Queimada':
+//       return Category.posteQueimado;
+//     case 'Bueiro Entupido':
+//       return Category.bueiroEntupido;
+//     case 'Iluminação Inadequada':
+//       return Category.iluminacaoInadequada;
+//     case 'Sinalização Inadequada':
+//       return Category.sinalizacaoInadequada;
+//     case 'Lixo Acumulado':
+//       return Category.lixoAcumulado;
+//     case 'Vazamento de Água':
+//       return Category.vazamentoAgua;
+//     case 'Obstrução na Via':
+//       return Category.obstrucaoVia;
+//     case 'Árvore Caída':
+//       return Category.arvoreCaida;
+//     case 'Pichação':
+//       return Category.pichacao;
+//     case 'Outro':
+//       return Category.outro;
+//     default:
+//       return Category.buracoRua; // Padrão para 'Buraco na rua'
+//   }
+// }
 
 // Classe para representar um modelo de chaamdo
 class ReportingModel {
   ReportingModel({
-    required this.chamadoId,
-    required this.userId, // Id do usuário
-    required this.isDone, // Concluido ou não [Visivel apenas se conluido]
-    required this.address, // Endereço
-    required this.cep, // CEP da rua
-    required this.addressNumber, // Número de residencia ou comercio próximo
-    required this.referPoint, // Tiutlo do chamado
-    required this.description, // Subtitulo do chamado
-    required this.category, // Categoria
-    required this.date, // Data
-    required this.statusMessage, // Status [Enviado, Analise, Andamento, Finalizado]
-    required this.definicaoCategoria, //& Definição manual do chamado
-    required this.showMessage, //! Exibir ou não a mensagem do admin
-    required this.messageString, //@ Mensagem do ADM
+    this.chamadoId,
+    this.userId, // Id do usuário
+    this.isDone, // Concluido ou não [Visivel apenas se conluido]
+    this.address, // Endereço
+    this.cep, // CEP da rua
+    this.addressNumber, // Número de residencia ou comercio próximo
+    this.referPoint, // Tiutlo do chamado
+    this.description, // Subtitulo do chamado
+    this.category, // Categoria
+    this.date, // Data
+    this.statusMessage, // Status [Enviado, Analise, Andamento, Finalizado]
+    this.definicaoCategoria, //& Definição manual do chamado
+    this.showMessage, //! Exibir ou não a mensagem do admin
+    this.messageString, //@ Mensagem do ADM
     this.imageFile,
     this.videoFile,
   });
 
-  final String chamadoId;
-  final String userId;
-  final bool isDone;
-  final String address;
-  final String cep;
-  final String addressNumber;
-  final String referPoint;
-  final String description;
-  final Category category;
-  final String definicaoCategoria;
-  final DateTime date;
-  final String statusMessage;
-  final bool showMessage;
-  final String messageString;
+  final String? chamadoId;
+  final String? userId;
+  final bool? isDone;
+  final String? address;
+  final String? cep;
+  final String? addressNumber;
+  final String? referPoint;
+  final String? description;
+  final String? category;
+  final String? definicaoCategoria;
+  final DateTime? date;
+  final String? statusMessage;
+  final bool? showMessage;
+  final String? messageString;
   final String? imageFile;
   final String? videoFile;
 
-  String get formattedDate => formatter.format(date);
+  String get formattedDate => formatter.format(date!);
 
   @override
   String toString() {
@@ -152,9 +152,9 @@ class ReportingModel {
       'Numero do Endereco': addressNumber,
       'Ponto de Referencia': referPoint,
       'Descricao': description,
-      'Categoria': category.categoryDescription,
+      'Categoria': category,
       'Categoria do chamado': definicaoCategoria,
-      'Data do Chamado': Timestamp.fromDate(date),
+      'Data do Chamado': Timestamp.fromDate(date!),
       'Exibir Mensagem': showMessage,
       'Status do chamado': statusMessage,
       'Mensagem do Admin': messageString,
@@ -174,7 +174,7 @@ class ReportingModel {
       addressNumber: map['Numero do Endereco'] ?? '',
       referPoint: map['Ponto de Referencia'] ?? '',
       description: map['Descricao'] ?? '',
-      category: getCategoryFromString(map['Categoria'] as String),
+      category: map['Categoria'] ?? '',
       definicaoCategoria: map['Categoria do chamado'] ?? '',
       date: (map['Data do Chamado'] as Timestamp).toDate(),
       showMessage: map['Exibir Mensagem'] ?? false,
@@ -192,33 +192,36 @@ class ReportingModel {
     log(data.toString());
 
     // Lista de campos esperados
-    const expectedFields = [
-      'Endereco-Local',
-      'CEP',
-      'Ponto de Referencia',
-      'Numero do Endereco',
-      'Descricao',
-      'Categoria',
-      'Categoria do chamado',
-      'Status do chamado',
-      'Data do Chamado',
-      'Exibir Mensagem',
-      'Concluido',
-      'Mensagem do Admin',
-      'Id do Usuario',
-      'Id do Chamado',
-    ];
+    // const expectedFields = [
+    //   'Endereco-Local',
+    //   'CEP',
+    //   'Ponto de Referencia',
+    //   'Numero do Endereco',
+    //   'Descricao',
+    //   'Categoria',
+    //   'Categoria do chamado',
+    //   'Status do chamado',
+    //   'Data do Chamado',
+    //   'Exibir Mensagem',
+    //   'Concluido',
+    //   'Mensagem do Admin',
+    //   'Id do Usuario',
+    //   'Id do Chamado',
+    // ];
 
     // Verificar se todos os campos esperados estão presentes
-    for (var field in expectedFields) {
-      if (!data.containsKey(field)) {
-        log("Document data: $data");
-        throw Exception("Document missing field: $field");
-      }
-    }
+    // for (var field in expectedFields) {
+    //   if (!data.containsKey(field)) {
+    //     log("Document data: $data");
+    //     throw Exception("Document missing field: $field");
+    //   }
+    // }
 
     // Função para analisar e converter uma data em formato dinâmico para DateTime
     DateTime parseDate(dynamic input) {
+      if (input == ''){
+        return DateTime(1, 1, 1);
+      }
       if (input is Timestamp) {
         // Se o input for do tipo Timestamp (Firestore), converte para DateTime e retorna
         return input.toDate();
@@ -255,9 +258,9 @@ class ReportingModel {
       referPoint: data['Ponto de Referencia'] ?? '',
       addressNumber: data['Numero do Endereco'] ?? '',
       description: data['Descricao'] ?? '',
-      category: getCategoryFromString(data['Categoria'] as String),
+      category: data['Categoria'] ?? '',
       definicaoCategoria: data['Categoria do chamado'] ?? '',
-      date: parseDate(data['Data do Chamado']),
+      date: parseDate(data['Data do Chamado'] ?? '') ,
       showMessage: data['Exibir Mensagem'] ?? false,
       statusMessage: data['Status do chamado'] ?? '',
       messageString: data['Mensagem do Admin'] ?? '',
@@ -276,7 +279,7 @@ class ReportingModel {
     String? addressNumber, // Novo número de endereço (opcional)
     String? referPoint, // Novo ponto de referência (opcional)
     String? description, // Nova descrição (opcional)
-    Category? category, // Nova categoria (opcional)
+    String? category, // Nova categoria (opcional)
     String? definicaoCategoria, // Nova definição de categoria (opcional)
     DateTime? date, // Nova data (opcional)
     String? statusMessage, // Nova mensagem de status (opcional)
