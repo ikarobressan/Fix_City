@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -69,10 +72,10 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
 
     if (usuarioLogado != null) {
       // Faça algo com o usuário logado
-      print('Usuário logado: ${usuarioLogado.email}');
+      log('Usuário logado: ${usuarioLogado.email}');
     } else {
       // Não há usuário logado
-      print('Nenhum usuário logado.');
+      log('Nenhum usuário logado.');
     }
 
     // Widget observável que reage às mudanças de estado (mudanças no modo escuro/claro)
@@ -135,13 +138,27 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
 
                 // Ações na barra de aplicativos (calendário e notificações)
                 actions: [
-                  IconButton(
-                    onPressed: themeController.toggleTheme,
-                    icon: Icon(
-                      isDark ? LineAwesomeIcons.moon : LineAwesomeIcons.sun,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            CupertinoIcons.calendar,
+                            color: isDark ? tWhiteColor : tDarkColor,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            CupertinoIcons.bell,
+                            color: isDark ? tWhiteColor : tDarkColor,
+                          ),
+                        ),
+                      ],
                     ),
-                    iconSize: 26,
-                  )
+                  ),
                 ],
               ),
 
@@ -165,7 +182,8 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
                               ? AdminChamados(widget: widget) // True
                               : UserChamadosNew(
                                   widget: widget,
-                                  usuarioLogado: usuarioLogado); // False
+                                  usuarioLogado: usuarioLogado,
+                                ); // False
                         },
                       ),
                     ),
