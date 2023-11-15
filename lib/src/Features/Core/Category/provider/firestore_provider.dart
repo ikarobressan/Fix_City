@@ -36,13 +36,11 @@ class FirestoreProvider with ChangeNotifier {
     QuerySnapshot<Map<String, dynamic>> querySnapshot =
         await FirebaseFirestore.instance.collection(collectionName).get();
 
-    querySnapshot.docs.forEach(
-      (doc) {
+    for (var doc in querySnapshot.docs) {
         categories.add(
           doc['name'],
         );
-      },
-    );
+      }
 
     return categories;
   }

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../model/chamados_model.dart';
-import '../model/generateReportId.dart';
+import '../model/generate_report_id.dart';
 
 // Classe para gerenciar operações relacionadas aos chamados
 class ReportController extends GetxController {
