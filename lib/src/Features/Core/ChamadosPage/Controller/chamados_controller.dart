@@ -151,7 +151,7 @@ class ReportController extends GetxController {
     String addressNumber,
     String description,
     String category,
-    String definicaoCategoria, 
+    String definicaoCategoria,
     double? longitudeReport,
     double? latitudeReport, {
     PlatformFile? imageFile,
@@ -422,43 +422,17 @@ class ReportController extends GetxController {
   // Método para atualizar um chamado existente no Firestore.
   Future<void> updateReport(
     String reportId,
-    ReportingModel updatedReport,
+    Map<String, dynamic> updatedReport,
   ) async {
     try {
       // Referência ao documento do chamado na coleção principal de chamados.
       final docRef = _firestore.collection(chamadosCollection).doc(reportId);
 
-      // Busca o chamado pelo seu ID.
-      final docSnapshot = await docRef.get();
+      // Atualiza o chamado na coleção principal de chamados.
+      await docRef.update(updatedReport);
 
-      if (docSnapshot.exists && docSnapshot.data() != null) {
-        // Converte os dados atuais do chamado em um modelo.
-        final existingReport = ReportingModel.fromMap(
-          docSnapshot.data() as Map<String, dynamic>,
-        );
-
-        // Mescla o chamado atual com o chamado atualizado.
-        final mergedReport = updatedReport.copyWith(
-          imageFile: updatedReport.imageFile ?? existingReport.imageFile,
-          videoFile: updatedReport.videoFile ?? existingReport.videoFile,
-        );
-
-        // Atualiza o chamado na coleção principal de chamados.
-        await docRef.update(mergedReport.toMap());
-
-        // Atualiza o chamado no documento associado ao usuário.
-        await _firestore
-            .collection(usersCollection)
-            .doc(mergedReport.userId)
-            .collection(chamadosCollection)
-            .doc(reportId)
-            .update(mergedReport.toMap());
-
-        // Notifica o usuário sobre o sucesso da operação.
-        Get.snackbar('Sucesso!', 'Chamado atualizado com sucesso');
-      } else {
-        throw Exception('Chamado não encontrado');
-      }
+      // Notifica o usuário sobre o sucesso da operação.
+      Get.snackbar('Sucesso!', 'Chamado atualizado com sucesso');
     } catch (e) {
       log('Erro ao atualizar o chamado: $e');
       Get.snackbar('Erro', 'Falha ao atualizar o chamado: $e');
@@ -500,10 +474,8 @@ class ReportController extends GetxController {
   Future<String?> getChamadoImage(String chamadoId, String userId) async {
     try {
       // Consulta o Firestore para obter o chamado específico pelo chamadoId e userId.
-      DocumentSnapshot chamadoSnapshot = await _firestore
-          .collection('Chamados')
-          .doc(chamadoId)
-          .get();
+      DocumentSnapshot chamadoSnapshot =
+          await _firestore.collection('Chamados').doc(chamadoId).get();
 
       final data = chamadoSnapshot.data() as Map<String, dynamic>;
 
@@ -518,10 +490,8 @@ class ReportController extends GetxController {
   Future<String?> getChamadoVideo(String chamadoId, String userId) async {
     try {
       // Consulta o Firestore para obter o chamado específico pelo chamadoId e userId.
-      DocumentSnapshot chamadoSnapshot = await _firestore
-          .collection('Chamados')
-          .doc(chamadoId)
-          .get();
+      DocumentSnapshot chamadoSnapshot =
+          await _firestore.collection('Chamados').doc(chamadoId).get();
 
       final data = chamadoSnapshot.data() as Map<String, dynamic>;
 

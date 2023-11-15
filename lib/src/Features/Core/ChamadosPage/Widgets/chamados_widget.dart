@@ -10,7 +10,7 @@ import '../../../../Controller/theme_controller.dart';
 import '../../../Authentication/Models/user_model.dart';
 import '../../Category/provider/firestore_provider.dart';
 import '../Controller/user_controller.dart';
-import '../Form/Screens/edit_report_new.dart';
+import '../Form/Screens/edit_report.dart';
 import '../model/chamados_model.dart';
 
 class ChamadosWidget extends StatefulWidget {

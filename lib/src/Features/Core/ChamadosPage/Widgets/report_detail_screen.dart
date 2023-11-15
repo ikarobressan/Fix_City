@@ -4,6 +4,7 @@ import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/observation_admin.dart';
 
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
@@ -65,6 +66,8 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> listObs = widget.reportingModel.observationsAdmin as List;
+
     final ThemeController themeController = Get.find();
     List<String> statusMessageList = [
       "Enviado",
@@ -468,6 +471,28 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                     ),
                   ],
                 ),
+                const Gap(12),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Observações do admin:',
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  children: List.generate(
+                    listObs.length,
+                    (index) => StepWidget(
+                        obs: listObs[index]["observation"],
+                        data: listObs[index]["data"],
+                        statusMessage: widget.reportingModel.statusMessage),
+                  ),
+                )
               ],
             ),
           ),
