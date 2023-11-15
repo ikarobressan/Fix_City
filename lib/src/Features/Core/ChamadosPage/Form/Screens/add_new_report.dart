@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/full_screen_image.dart';
+import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/full_screen_video_player.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../../Constants/colors.dart';
@@ -188,6 +190,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                 ..initialize();
           _videoController.setLooping(true);
           _videoController.play();
+          _videoController.setPlaybackSpeed(2.5);
         });
       } else {
         // Registra que a ação foi cancelada e nenhum vídeo foi gravado
@@ -464,31 +467,49 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     children: [
                       if (selectedImageFile != null ||
                           selectedImageFile?.path != null)
-                        Image.file(
-                          File(selectedImageFile!.path!),
-                          // Altura da imagem
-                          height: 200,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Center(
-                              child: Text(
-                                'Erro ao carregar a imagem.',
-                                style:
-                                    Theme.of(context).textTheme.headlineLarge,
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(
+                              () => FullScreenImage(
+                                imagePath: selectedImageFile!.path!,
                               ),
                             );
                           },
+                          child: Image.file(
+                            File(selectedImageFile!.path!),
+                            // Altura da imagem
+                            height: 200,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Center(
+                                child: Text(
+                                  'Erro ao carregar a imagem.',
+                                  style:
+                                      Theme.of(context).textTheme.headlineLarge,
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       const Gap(20),
                       if (selectedVideoFile != null ||
                           selectedVideoFile?.path != null)
-                        SizedBox(
-                          height: 200,
-                          width: 140,
-                          child: AspectRatio(
-                            aspectRatio: _videoController.value.playbackSpeed,
-                            child: VideoPlayer(_videoController),
-                          ),
-                        )
+                        GestureDetector(
+                            onTap: () {
+                              Get.to(
+                                () => FullScreenVideoPlayer(
+                                  videoPath: selectedVideoFile!.path!,
+                                ),
+                              );
+                            },
+                            child: SizedBox(
+                              height: 200,
+                              width: 140,
+                              child: AspectRatio(
+                                aspectRatio:
+                                    _videoController.value.playbackSpeed,
+                                child: VideoPlayer(_videoController),
+                              ),
+                            ))
                     ],
                   ),
                 ],

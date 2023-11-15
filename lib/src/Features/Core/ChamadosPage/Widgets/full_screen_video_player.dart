@@ -1,11 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class FullScreenVideoPlayer extends StatefulWidget {
-  final String videoUrl;
+  final String? videoUrl;
+  final String? videoPath;
 
-  const FullScreenVideoPlayer({super.key, required this.videoUrl});
+  const FullScreenVideoPlayer(
+      {super.key, this.videoUrl, this.videoPath});
 
   @override
   State<FullScreenVideoPlayer> createState() => _FullScreenVideoPlayerState();
@@ -17,13 +21,23 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse(widget.videoUrl),
-    )..initialize().then(
-        (_) {
-          setState(() {});
-        },
-      );
+
+    if (widget.videoUrl != null) {
+      _controller = VideoPlayerController.networkUrl(
+        Uri.parse(widget.videoUrl!),
+      )..initialize().then(
+          (_) {
+            setState(() {});
+          },
+        );
+    } else {
+      _controller = VideoPlayerController.file(File(widget.videoPath!))
+        ..initialize().then(
+          (_) {
+            setState(() {});
+          },
+        );
+    }
   }
 
   void _playPause() {
