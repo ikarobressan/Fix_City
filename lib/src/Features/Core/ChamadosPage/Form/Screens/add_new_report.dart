@@ -188,9 +188,6 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
           _videoController =
               VideoPlayerController.file(File(selectedVideoFile!.path!))
                 ..initialize();
-          _videoController.setLooping(true);
-          _videoController.play();
-          _videoController.setPlaybackSpeed(2.5);
         });
       } else {
         // Registra que a ação foi cancelada e nenhum vídeo foi gravado
@@ -494,22 +491,22 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       if (selectedVideoFile != null ||
                           selectedVideoFile?.path != null)
                         GestureDetector(
-                            onTap: () {
-                              Get.to(
-                                () => FullScreenVideoPlayer(
-                                  videoPath: selectedVideoFile!.path!,
-                                ),
-                              );
-                            },
-                            child: SizedBox(
-                              height: 200,
-                              width: 140,
-                              child: AspectRatio(
-                                aspectRatio:
-                                    _videoController.value.playbackSpeed,
-                                child: VideoPlayer(_videoController),
+                          onTap: () {
+                            Get.to(
+                              () => FullScreenVideoPlayer(
+                                videoPath: selectedVideoFile!.path!,
                               ),
-                            ))
+                            );
+                          },
+                          child: SizedBox(
+                            height: 200,
+                            width: 140,
+                            child: AspectRatio(
+                              aspectRatio: _videoController.value.playbackSpeed,
+                              child: VideoPlayer(_videoController),
+                            ),
+                          ),
+                        )
                     ],
                   ),
                 ],
