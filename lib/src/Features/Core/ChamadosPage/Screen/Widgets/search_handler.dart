@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../../../model/chamados_model.dart';
+import '../../model/chamados_model.dart';
 
 class SearchHandler {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

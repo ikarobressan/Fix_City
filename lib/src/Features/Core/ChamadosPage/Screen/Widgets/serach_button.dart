@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/chamados_model.dart';
+import '../../model/chamados_model.dart';
 import 'search_handler.dart';
 
 class FilterButton extends StatelessWidget {
