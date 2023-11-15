@@ -28,6 +28,9 @@ const tWhiteColor = whiteColor;
 const tDarkColor = Color(0xff272727);
 const tCardBgColor = Color(0xFFF7F5F1);
 var subtitleColor = const Color.fromARGB(255, 220, 220, 220);
+var grey200 = Colors.grey.shade200;
+const greyColor = Colors.grey;
+var grey10 = Colors.grey.withOpacity(.1);
 
 //* -- SOCIAL Button COLORS
 const tGoogleBgColor = Color(0xFFDFEFFF);
