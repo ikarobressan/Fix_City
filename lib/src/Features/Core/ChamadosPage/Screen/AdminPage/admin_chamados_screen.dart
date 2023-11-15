@@ -32,10 +32,10 @@ class _AdminChamadosState extends State<AdminChamados> {
   final isSelected = TextEditingController();
 
   Future<void> _loadCategories() async {
-    List<String> _categories =
+    List<String> categories =
         await FirestoreProvider.getDocuments('categories');
     setState(() {
-      categories = _categories;
+      categories = categories;
     });
   }
 

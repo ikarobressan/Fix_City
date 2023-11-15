@@ -33,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: const Text('Você desja sair?'),
+          title: const Text('Você deseja sair?'),
           content: const Text('Você realmente deseja sair do aplicativo?'),
           actions: [
             SizedBox(

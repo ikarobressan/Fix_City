@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../Constants/colors.dart';
 
 class FullScreenImage extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
+  final String? imagePath;
 
-  const FullScreenImage({super.key, required this.imageUrl});
+  const FullScreenImage({super.key, this.imageUrl, this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +25,14 @@ class FullScreenImage extends StatelessWidget {
         backgroundColor: Colors.black,
         body: Stack(
           children: [
-            Center(
-              child: Image.network(imageUrl),
-            ),
+            if (imageUrl != null)
+              Center(
+                child: Image.network(imageUrl!),
+              ),
+            if (imagePath != null)
+              Center(
+                child: Image.file(File(imagePath!)),
+              ),
             Positioned(
               top: 40,
               left: 10,

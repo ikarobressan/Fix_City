@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:the_safe_city/src/CommomWidgets/Buttons/primary_button.dart';
 
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
@@ -31,6 +34,42 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
 
     // Obtém instância do controlador de usuário usando Get.find()
     final UserController userController = Get.find();
+
+    Future<bool> showExitDialog(BuildContext context) async {
+      // Usando Completer para obter o resultado final
+      final completer = Completer<bool>();
+
+      Get.defaultDialog(
+        title: "CANCELAR",
+        titleStyle: const TextStyle(fontSize: 20),
+        content: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 15.0),
+          child: Text("Tem certeza que gostaria\n de cancelar o chamado?"),
+        ),
+        confirm: MyPrimaryButton(
+          isFullWidth: false,
+          onPressed: () {
+            FirestoreProvider.putDocument(
+              "Chamados",
+              {"Status do chamado": "Cancelado"},
+              documentId: widget._reportingModel.chamadoId,
+            );
+            Navigator.pop(context);
+          },
+          text: "Sim",
+        ),
+        cancel: SizedBox(
+          width: 100,
+          child: OutlinedButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text("Não"),
+          ),
+        ),
+      );
+      return completer.future;
+    }
 
     return StreamBuilder<UserModel?>(
       stream: userController.userStream,
@@ -226,7 +265,9 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
                                         padding: const EdgeInsets.all(5.0),
                                         minimumSize: const Size(100, 20),
                                         elevation: 5),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      showExitDialog(context);
+                                    },
                                     child: Text(
                                       'Cancelar',
                                       style: Theme.of(context)

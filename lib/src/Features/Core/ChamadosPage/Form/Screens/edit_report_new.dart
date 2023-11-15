@@ -17,7 +17,7 @@ class EditReportFormScreenNew extends StatefulWidget {
 
 class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
   final observation = TextEditingController();
-  final key_sccaffold = GlobalKey();
+  final keySccaffold = GlobalKey();
 
   bool submitData() {
     if (observation.text.isEmpty) {
@@ -67,7 +67,7 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
         updatedReport,
       );
 
-      Navigator.of(key_sccaffold.currentContext!).pop();
+      Navigator.of(keySccaffold.currentContext!).pop();
     }
   }
 
@@ -84,7 +84,7 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
     );
 
     return Scaffold(
-      key: key_sccaffold,
+      key: keySccaffold,
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: Text(
