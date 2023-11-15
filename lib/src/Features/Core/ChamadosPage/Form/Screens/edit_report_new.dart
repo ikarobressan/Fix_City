@@ -1,7 +1,10 @@
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
+import '../../../../../Constants/colors.dart';
+import '../../../../../Controller/theme_controller.dart';
 import '../../../../../Utils/Widgets/input_text_field.dart';
 import '../../Controller/chamados_controller.dart';
 import '../../model/chamados_model.dart';
@@ -73,6 +76,9 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeController themeController = Get.find();
+    final isDark = themeController.isDarkMode.value;
+
     List<String> statusMessageList = [
       "Enviado",
       "Em andamento",
@@ -85,21 +91,21 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
 
     return Scaffold(
       key: keySccaffold,
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: isDark ? tDarkColor : grey200,
       appBar: AppBar(
         title: Text(
           'Editar chamado',
           style: Theme.of(context).textTheme.displayLarge,
         ),
         centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 5,
+        backgroundColor: isDark ? tDarkColor : whiteColor,
+        elevation: 0,
         //shadow
         titleSpacing: 10,
         //space between leading icon and title
       ),
       body: Container(
-        color: Colors.grey.withOpacity(.1),
+        color: isDark ? tDarkColor : grey10,
         padding: const EdgeInsets.symmetric(
           horizontal: 20,
           vertical: 20,
@@ -117,30 +123,32 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
               activeStepTextColor: Colors.green,
               activeStepBackgroundColor: Colors.green,
               activeStepIconColor: Colors.green,
-              finishedStepTextColor: Colors.black,
+              finishedStepTextColor: isDark ? whiteColor : blackColor,
               finishedStepBackgroundColor: Colors.green,
               disableScroll: true,
               showLoadingAnimation: false,
               stepRadius: 15,
-              lineStyle: const LineStyle(
+              lineStyle: LineStyle(
                 lineLength: 70,
                 lineType: LineType.normal,
-                defaultLineColor: Colors.grey,
+                defaultLineColor: isDark ? whiteColor : greyColor,
                 finishedLineColor: Colors.green,
               ),
               steps: List.generate(
                 statusMessageList.length,
                 (index) => EasyStep(
                   customStep: CircleAvatar(
-                    radius: 8,
+                    radius: 10,
                     backgroundColor: Colors.green,
                     child: CircleAvatar(
-                      radius: 7,
+                      radius: 8,
                       backgroundColor: activeStep >= index
                           ? activeStep == statusMessageList.length
                               ? Colors.red
                               : Colors.green
-                          : Colors.grey,
+                          : isDark
+                              ? whiteColor
+                              : greyColor,
                     ),
                   ),
                   title: statusMessageList[index],
@@ -177,6 +185,7 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
               'Observação:',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const Gap(5),
             InputTextField(
               controller: observation,
               keyBoardType: TextInputType.text,
@@ -192,7 +201,7 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.all(5.0),
                 minimumSize: const Size(100, 20),
-                elevation: 5,
+                elevation: isDark ? 0 : 5,
               ),
               onPressed: () {
                 _updateReport();
