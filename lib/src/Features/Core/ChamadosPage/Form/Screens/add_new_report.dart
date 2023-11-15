@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../../../Constants/colors.dart';
 import '../../../../../Controller/theme_controller.dart';
@@ -61,6 +62,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   //! Variáveis para armazenar os arquivos selecionados
   PlatformFile? selectedImageFile;
   PlatformFile? selectedVideoFile;
+
+  // Variáveis para controlar o video
+  late VideoPlayerController _videoController;
 
   //@ // Função para validar os dados inseridos e retornar true se estiverem corretos ou false caso contrário
   bool submitData() {
@@ -178,6 +182,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
             size: file.lengthSync(),
             bytes: file.readAsBytesSync(),
           );
+
+          _videoController =
+              VideoPlayerController.file(File(selectedVideoFile!.path!))
+                ..initialize();
+          _videoController.setLooping(true);
+          _videoController.play();
         });
       } else {
         // Registra que a ação foi cancelada e nenhum vídeo foi gravado
@@ -450,10 +460,10 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     ],
                   ),
                   const Gap(5),
-                  if (selectedImageFile != null ||
-                      selectedImageFile?.path != null)
-                    Row(
-                      children: [
+                  Row(
+                    children: [
+                      if (selectedImageFile != null ||
+                          selectedImageFile?.path != null)
                         Image.file(
                           File(selectedImageFile!.path!),
                           // Altura da imagem
@@ -468,8 +478,19 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             );
                           },
                         ),
-                      ],
-                    ),
+                      const Gap(20),
+                      if (selectedVideoFile != null ||
+                          selectedVideoFile?.path != null)
+                        SizedBox(
+                          height: 200,
+                          width: 140,
+                          child: AspectRatio(
+                            aspectRatio: _videoController.value.playbackSpeed,
+                            child: VideoPlayer(_videoController),
+                          ),
+                        )
+                    ],
+                  ),
                 ],
               ),
               const Gap(20),
@@ -502,24 +523,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                         padding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                       onPressed: () async {
-                        //! Se a função submitData retornar true, os dados são válidos
                         if (submitData()) {
-                          //* Salva dentro de uma coleção chamados dentro
-                          //* do documento do usuário logado/atual
-                          await ReportController().userAddNewReport(
-                            address.text.trim(),
-                            cep.text.trim(),
-                            referPoint.text.trim(),
-                            addressNumber.text.trim(),
-                            description.text.trim(),
-                            _selectedCategory,
-                            definicaoCategoria.text.trim(),
-                            imageFile: selectedImageFile!,
-                            videoFile: selectedVideoFile,
-                            isDone: false,
-                          );
                           //* Salva direto na coleção Chamados
-                          await ReportController().addNewReportForAdmin(
+                          await ReportController().addNewReport(
                             address.text.trim(),
                             cep.text.trim(),
                             referPoint.text.trim(),
@@ -531,14 +537,10 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             videoFile: selectedVideoFile,
                             isDone: false,
                           );
-                          log(submitData().toString());
-                          //? Isto irá fechar o formulário após a submissão bem-sucedida
-                          // Exibe uma notificação de sucesso.
 
                           // ignore: use_build_context_synchronously
                           Navigator.pop(context);
                         }
-                        //! Se submitData retornar false, a função addNewReport não será chamada e o formulário não será fechado
                       },
                       child: const Text('Enviar'),
                     ),
