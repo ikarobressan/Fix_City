@@ -151,7 +151,9 @@ class ReportController extends GetxController {
     String addressNumber,
     String description,
     String category,
-    String definicaoCategoria, {
+    String definicaoCategoria, 
+    double? longitudeReport,
+    double? latitudeReport, {
     PlatformFile? imageFile,
     PlatformFile? videoFile,
     String? messageString,
@@ -200,6 +202,7 @@ class ReportController extends GetxController {
         showMessage: showMessage,
         imageFile: fileUrls['imagemChamado'] ?? 'imagem não disponivel',
         videoFile: fileUrls['videoChamado'] ?? 'vídeo não disponivel',
+        locationReport: GeoPoint(latitudeReport!, longitudeReport!),
       );
 
       // Salva o chamado no Firestore sob a coleção de chamados

@@ -115,6 +115,7 @@ class ReportingModel {
     this.messageString, //@ Mensagem do ADM
     this.imageFile,
     this.videoFile,
+    this.locationReport,
   });
 
   final String? chamadoId;
@@ -133,6 +134,7 @@ class ReportingModel {
   final String? messageString;
   final String? imageFile;
   final String? videoFile;
+  final GeoPoint? locationReport;
 
   String get formattedDate => formatter.format(date!);
 
@@ -160,6 +162,7 @@ class ReportingModel {
       'Mensagem do Admin': messageString,
       'Imagem do Chamado': imageFile,
       'Video do Chamado': videoFile,
+      'location_report': locationReport,
     };
   }
 
