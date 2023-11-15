@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/full_screen_image.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/full_screen_video_player.dart';
 import 'package:video_player/video_player.dart';
 
 import '../../../../../Constants/colors.dart';
@@ -15,6 +13,8 @@ import '../../../../../Controller/theme_controller.dart';
 import '../../../../../Services/storage_service.dart';
 import '../../../Category/provider/firestore_provider.dart';
 import '../../Controller/chamados_controller.dart';
+import '../../Widgets/full_screen_image.dart';
+import '../../Widgets/full_screen_video_player.dart';
 import '../Widgets/input_address.dart';
 import '../Widgets/input_description.dart';
 

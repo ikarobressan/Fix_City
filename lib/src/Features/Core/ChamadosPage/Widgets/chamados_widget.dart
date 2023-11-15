@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/CommomWidgets/Buttons/primary_button.dart';
 
+import '../../../../CommomWidgets/Buttons/primary_button.dart';
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
 import '../../../Authentication/Models/user_model.dart';
