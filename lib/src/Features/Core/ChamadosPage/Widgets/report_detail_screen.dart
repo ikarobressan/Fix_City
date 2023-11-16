@@ -471,7 +471,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                     ),
                   ],
                 ),
-                const Gap(12),
+                const Gap(20),
                 Column(
                   children: [
                     Row(
@@ -484,15 +484,17 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                     ),
                   ],
                 ),
-                Column(
-                  children: List.generate(
-                    listObs.length,
-                    (index) => StepWidget(
-                        obs: listObs[index]["observation"],
-                        data: listObs[index]["data"],
-                        statusMessage: widget.reportingModel.statusMessage),
-                  ),
-                )
+                listObs[0].isNotEmpty ?
+                  Column(
+                    children: List.generate(
+                      listObs.length,
+                      (index) => StepWidget(
+                          obs: listObs[index]["observation"],
+                          data: listObs[index]["data"],
+                          status: listObs[index]["status"]),
+                    ),
+                  )
+                  : const Text("Sem observações")
               ],
             ),
           ),

@@ -53,6 +53,7 @@ class _EditReportFormScreenNewState extends State<EditReportFormScreenNew> {
             "ready": false,
             "observation": observation.text,
             "data": currentDate,
+            "status": widget.documentData["Status do chamado"],
           }
         ]),
       };

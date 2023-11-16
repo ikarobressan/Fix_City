@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 class StepWidget extends StatelessWidget {
-  final String? statusMessage;
+  final String? status;
   final dynamic data;
   final String obs;
 
   const StepWidget(
       {super.key,
-      required this.statusMessage,
+      required this.status,
       required this.data,
       required this.obs});
 
@@ -28,14 +28,19 @@ class StepWidget extends StatelessWidget {
       margin: const EdgeInsets.all(8.0),
       child: Row(
         children: [
-          statusList[statusMessage],
+          Container(
+            child: statusList[status],
+          ),
           const Gap(20),
-          Column(
-            children: [
-              Text(data.toDate().toString()),
-              Text(obs),
-            ],
-          )
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(data.toDate().toString()),
+                Text(obs),
+              ],
+            ),
+          ),
         ],
       ),
     );
