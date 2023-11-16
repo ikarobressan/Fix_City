@@ -11,12 +11,17 @@ class InputAddress extends StatelessWidget {
       required this.address,
       required this.addressNumber,
       required this.cep,
-      required this.referPoint});
+      required this.referPoint,
+      required this.latitudeReport,
+      required this.longitudeReport,
+      });
 
   final TextEditingController address;
   final TextEditingController addressNumber;
   final TextEditingController cep;
   final TextEditingController referPoint;
+  final TextEditingController latitudeReport;
+  final TextEditingController longitudeReport;
 
   // Método para obter a localização atual do usuário.
   Future<loc.LocationData?> getCurrentLocation() async {
@@ -74,6 +79,8 @@ class InputAddress extends StatelessWidget {
       double? latitude = locationData.latitude;
       double? longitude = locationData.longitude;
       if (latitude != null && longitude != null) {
+        latitudeReport.text = latitude.toString();
+        longitudeReport.text = longitude.toString();
         Placemark addressPlacemark = await getAddress(latitude, longitude);
         address.text =
             '${addressPlacemark.thoroughfare} - ${addressPlacemark.subLocality}, ${addressPlacemark.subAdministrativeArea} - ${addressPlacemark.administrativeArea}';

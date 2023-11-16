@@ -8,6 +8,7 @@ import '../../Authentication/Models/user_model.dart';
 import '../Category/views/category_screen.dart';
 import '../ChamadosPage/Controller/user_controller.dart';
 import '../ChamadosPage/Screen/chamados_screen.dart';
+import '../Mapa/maps.dart';
 import '../Profile/profile_screen.dart';
 
 class MyNavigationBar extends StatefulWidget {
@@ -20,8 +21,10 @@ class MyNavigationBar extends StatefulWidget {
 class _MyNavigationBarState extends State<MyNavigationBar> {
   final List<GetPage> _pages = [
     GetPage(name: '/reporting', page: () => const ChamadosScreen()),
+    GetPage(name: '/maps', page: () => const MapScreen()),
     GetPage(name: '/category', page: () => const CategoryScreen()),
     GetPage(name: '/user/Settings', page: () => const ProfileScreen()),
+
   ];
 
   final controller = Get.put(NavBarController());
@@ -78,25 +81,33 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
                         label: selectedIndex == 0 ? "Chamados" : "",
                         backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
                       ),
+                      BottomNavigationBarItem(
+                        icon: Icon(
+                          Icons.map_sharp,
+                          color: isDark ? whiteColor : blackColor,
+                        ),
+                        label: selectedIndex == 1 ? "Maps" : "",
+                        backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
+                      ),
                       if (isAdmin)
                         BottomNavigationBarItem(
                           icon: Icon(
                             Icons.sell_sharp,
                             color: isDark ? whiteColor : blackColor,
                           ),
-                          label: selectedIndex == 1 ? "Categorias" : "",
+                          label: selectedIndex == 2 ? "Categorias" : "",
                           backgroundColor: isDark ? darkNavBar : whiteBgNavBar,
                         ),
                       BottomNavigationBarItem(
                         icon: Icon(
                           Icons.person_sharp,
-                          color: isDark ? whiteColor : Colors.black,
+                          color: isDark ? whiteColor : blackColor,
                         ),
                         label: isAdmin
-                            ? selectedIndex == 2
+                            ? selectedIndex == 3
                                 ? "Perfil"
                                 : ""
-                            : selectedIndex == 1
+                            : selectedIndex == 2
                                 ? "Perfil"
                                 : "",
                         backgroundColor: isDark ? darkNavBar : whiteBgNavBar,

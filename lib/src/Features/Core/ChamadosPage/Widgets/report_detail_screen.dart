@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:easy_stepper/easy_stepper.dart';
+import 'observation_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
@@ -65,6 +66,8 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> listObs = widget.reportingModel.observationsAdmin as List;
+
     final ThemeController themeController = Get.find();
     List<String> statusMessageList = [
       "Enviado",
@@ -468,6 +471,30 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                     ),
                   ],
                 ),
+                const Gap(20),
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Observações do admin:',
+                          style: Theme.of(context).textTheme.headlineLarge,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                listObs[0].isNotEmpty ?
+                  Column(
+                    children: List.generate(
+                      listObs.length,
+                      (index) => StepWidget(
+                          obs: listObs[index]["observation"],
+                          data: listObs[index]["data"],
+                          status: listObs[index]["status"]),
+                    ),
+                  )
+                  : const Text("Sem observações")
               ],
             ),
           ),
