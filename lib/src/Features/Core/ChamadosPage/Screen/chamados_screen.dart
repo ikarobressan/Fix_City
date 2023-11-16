@@ -14,8 +14,7 @@ import '../model/chamados_model.dart';
 import '../../../Authentication/Models/user_model.dart';
 import '../Controller/user_controller.dart';
 import '../Widgets/chamados_page_body_header.dart';
-import 'AdminPage/admin_chamados_screen.dart';
-import 'UserPage/user_chamados_screen_new.dart';
+import 'list_chamados_screen.dart';
 
 class ChamadosScreen extends StatefulWidget {
   const ChamadosScreen({this.userModel, this.reportingModel, super.key});
@@ -179,11 +178,13 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
 
                           // Mostra chamados para admin ou usuário comum
                           return isAdmin
-                              ? AdminChamados(widget: widget) // True
-                              : UserChamadosNew(
+                              ? AdminChamadosNew(
                                   widget: widget,
-                                  usuarioLogado: usuarioLogado,
-                                ); // False
+                                )
+                              : AdminChamadosNew(
+                                  widget: widget,
+                                  usuarioLogado: user?.id,
+                                );
                         },
                       ),
                     ),

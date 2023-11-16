@@ -115,6 +115,8 @@ class ReportingModel {
     this.messageString, //@ Mensagem do ADM
     this.imageFile,
     this.videoFile,
+    this.locationReport,
+    this.observationsAdmin,
   });
 
   final String? chamadoId;
@@ -133,6 +135,8 @@ class ReportingModel {
   final String? messageString;
   final String? imageFile;
   final String? videoFile;
+  final GeoPoint? locationReport;
+  final dynamic observationsAdmin;
 
   String get formattedDate => formatter.format(date!);
 
@@ -160,6 +164,8 @@ class ReportingModel {
       'Mensagem do Admin': messageString,
       'Imagem do Chamado': imageFile,
       'Video do Chamado': videoFile,
+      'location_report': locationReport,
+      'observations_admin': observationsAdmin
     };
   }
 
@@ -182,6 +188,8 @@ class ReportingModel {
       messageString: map['Mensagem do Admin'],
       imageFile: map['Imagem do Chamado'] ?? '',
       videoFile: map['Video do Chamado'] ?? '',
+      locationReport: map["location_report"] ?? '',
+      observationsAdmin: map["observations_dmin"] ?? [{}]
     );
   }
 
@@ -190,32 +198,6 @@ class ReportingModel {
       DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data() ?? {};
     log(data.toString());
-
-    // Lista de campos esperados
-    // const expectedFields = [
-    //   'Endereco-Local',
-    //   'CEP',
-    //   'Ponto de Referencia',
-    //   'Numero do Endereco',
-    //   'Descricao',
-    //   'Categoria',
-    //   'Categoria do chamado',
-    //   'Status do chamado',
-    //   'Data do Chamado',
-    //   'Exibir Mensagem',
-    //   'Concluido',
-    //   'Mensagem do Admin',
-    //   'Id do Usuario',
-    //   'Id do Chamado',
-    // ];
-
-    // Verificar se todos os campos esperados estão presentes
-    // for (var field in expectedFields) {
-    //   if (!data.containsKey(field)) {
-    //     log("Document data: $data");
-    //     throw Exception("Document missing field: $field");
-    //   }
-    // }
 
     // Função para analisar e converter uma data em formato dinâmico para DateTime
     DateTime parseDate(dynamic input) {
@@ -266,6 +248,8 @@ class ReportingModel {
       messageString: data['Mensagem do Admin'] ?? '',
       imageFile: data['Imagem do Chamado'] ?? '',
       videoFile: data['Video do Chamado'] ?? '',
+      locationReport: data["location_report"] ?? '',
+      observationsAdmin: data["observations_admin"] ?? [{}]
     );
   }
 

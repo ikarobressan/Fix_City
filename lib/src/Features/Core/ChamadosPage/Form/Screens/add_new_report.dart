@@ -33,6 +33,9 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
   final description = TextEditingController();
   final definicaoCategoria = TextEditingController();
   final messageString = TextEditingController();
+  final latitudeReport = TextEditingController();
+  final longitudeReport = TextEditingController();
+  late Map<String, dynamic> locationReport;
 
   // --------------------------------------
   String _selectedCategory = '';
@@ -400,6 +403,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                     addressNumber: addressNumber,
                     cep: cep,
                     referPoint: referPoint,
+                    longitudeReport: longitudeReport,
+                    latitudeReport: latitudeReport
                   ),
                   const Gap(20),
                 ],
@@ -551,6 +556,8 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             description.text.trim(),
                             _selectedCategory,
                             definicaoCategoria.text.trim(),
+                            double.tryParse(longitudeReport.text),
+                            double.tryParse(latitudeReport.text),
                             imageFile: selectedImageFile!,
                             videoFile: selectedVideoFile,
                             isDone: false,
