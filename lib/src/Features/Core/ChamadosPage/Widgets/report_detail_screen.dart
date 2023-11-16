@@ -1,10 +1,10 @@
 import 'dart:developer';
 
 import 'package:easy_stepper/easy_stepper.dart';
+import 'observation_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Widgets/observation_admin.dart';
 
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';

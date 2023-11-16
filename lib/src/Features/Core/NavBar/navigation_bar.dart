@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/Mapa/maps.dart';
 
 import '../../../Constants/colors.dart';
 import '../../../Controller/theme_controller.dart';
@@ -9,6 +8,7 @@ import '../../Authentication/Models/user_model.dart';
 import '../Category/views/category_screen.dart';
 import '../ChamadosPage/Controller/user_controller.dart';
 import '../ChamadosPage/Screen/chamados_screen.dart';
+import '../Mapa/maps.dart';
 import '../Profile/profile_screen.dart';
 
 class MyNavigationBar extends StatefulWidget {

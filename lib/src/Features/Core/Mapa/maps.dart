@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:the_safe_city/src/Features/Core/Category/provider/firestore_provider.dart';
+
+import '../Category/provider/firestore_provider.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});

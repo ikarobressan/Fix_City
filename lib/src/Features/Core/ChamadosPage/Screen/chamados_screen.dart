@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Screen/list_chamados_screen.dart';
 
 import '../../../../CommomWidgets/Buttons/primary_button.dart';
 import '../../../../Constants/colors.dart';
@@ -15,6 +14,7 @@ import '../model/chamados_model.dart';
 import '../../../Authentication/Models/user_model.dart';
 import '../Controller/user_controller.dart';
 import '../Widgets/chamados_page_body_header.dart';
+import 'list_chamados_screen.dart';
 
 class ChamadosScreen extends StatefulWidget {
   const ChamadosScreen({this.userModel, this.reportingModel, super.key});

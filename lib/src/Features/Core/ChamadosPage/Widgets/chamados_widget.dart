@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/CommomWidgets/Buttons/primary_button.dart';
 
+import '../../../../CommomWidgets/Buttons/primary_button.dart';
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
 import '../../../Authentication/Models/user_model.dart';
@@ -83,7 +83,7 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: Container(
             width: double.infinity,
-            height: 210,
+            height: 250,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               // Define a cor de fundo com base no modo escuro/claro
@@ -154,6 +154,27 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
                             Expanded(
                               child: Text(
                                 widget._reportingModel.description!,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 0,
+                              child: Text(
+                                textAlign: TextAlign.left,
+                                "Categoria: ",
+                                style:
+                                    Theme.of(context).textTheme.headlineMedium,
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                widget._reportingModel.category!,
                                 style: Theme.of(context).textTheme.bodyMedium,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,

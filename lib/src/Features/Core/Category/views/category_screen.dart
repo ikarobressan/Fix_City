@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import '../../../../CommomWidgets/Buttons/primary_button.dart';
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
@@ -110,15 +110,15 @@ class CategoryScreen extends StatelessWidget {
                   }
                 },
               ),
-              actions: [
-                IconButton(
-                  onPressed: themeController.toggleTheme,
-                  icon: Icon(
-                    isDark ? LineAwesomeIcons.moon : LineAwesomeIcons.sun,
-                  ),
-                  iconSize: 26,
-                )
-              ],
+              // actions: [
+              //   IconButton(
+              //     onPressed: themeController.toggleTheme,
+              //     icon: Icon(
+              //       isDark ? LineAwesomeIcons.moon : LineAwesomeIcons.sun,
+              //     ),
+              //     iconSize: 26,
+              //   )
+              // ],
             ),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 28),

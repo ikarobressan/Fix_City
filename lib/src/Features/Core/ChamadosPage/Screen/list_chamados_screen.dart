@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:the_safe_city/src/Features/Core/ChamadosPage/Controller/chamados_controller.dart';
 
 import '../../../../Constants/colors.dart';
 import '../../Category/models/category.dart';
 import '../../Category/provider/firestore_provider.dart';
+import '../Controller/chamados_controller.dart';
 import '../model/chamados_model.dart';
 import '../Widgets/chamados_widget.dart';
 import '../Widgets/report_detail_screen.dart';
