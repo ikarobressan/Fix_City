@@ -26,6 +26,14 @@ class ChamadosWidget extends StatefulWidget {
 class _ChamadosWidgetState extends State<ChamadosWidget> {
   @override
   Widget build(BuildContext context) {
+    bool isUnread = false;
+    for (var obs in widget._reportingModel.observationsAdmin) {
+      if (obs["ready"] == false) {
+        isUnread = true;
+        break;
+      }
+    }
+
     // Obtém instância do controlador de tema usando Get.find()
     final ThemeController themeController = Get.find();
 
@@ -109,6 +117,14 @@ class _ChamadosWidgetState extends State<ChamadosWidget> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
+                            if (isUnread)
+                              const Icon(
+                                Icons.notifications,
+                                color:
+                                    Colors.red, // Customize the color as needed
+                                size: 20,
+                              ),
+                            const Gap(10),
                             if (widget._reportingModel.statusMessage ==
                                 "Encerrado")
                               const Icon(
