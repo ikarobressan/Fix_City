@@ -84,112 +84,107 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
         final isDark = themeController.isDarkMode.value;
 
         // Estrutura principal da página de chamados
-        return WillPopScope(
-          // Função acionada quando tenta-se voltar (pressionando o botão de voltar)
-          onWillPop: () => _onWillPop(context),
-
-          child: SafeArea(
-            child: Scaffold(
-              // Chave baseada no modo escuro ou claro
-              key: ValueKey(Get.isDarkMode),
-
-              // Cor de fundo baseada no modo escuro ou claro
-              backgroundColor: isDark ? tDarkColor : Colors.grey.shade200,
-
-              // Barra de aplicativo
-              appBar: AppBar(
-                // Configurações de cores e aparência baseadas no modo escuro ou claro
-                backgroundColor: isDark ? tDarkColor : whiteColor,
-                foregroundColor: isDark ? Colors.black : whiteColor,
-                elevation: 0,
-                centerTitle: true,
-                automaticallyImplyLeading: false,
-
-                // Título exibindo informações do usuário
-                title: StreamBuilder<UserModel?>(
-                  stream: userController.userStream,
-                  builder: (context, snapshot) {
-                    final user = snapshot.data;
-                    // bool isAdmin = user?.isAdmin ?? false;
-                    if (user == null) {
-                      return const Text('Nome de usuário não disponivel');
-                    } else {
-                      // Mostra a imagem e o nome do usuário
-                      return ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Colors.amber.shade400,
-                          radius: 25,
-                          child: Image.asset('assets/images/avatar.png'),
+        return SafeArea(
+          child: Scaffold(
+            // Chave baseada no modo escuro ou claro
+            key: ValueKey(Get.isDarkMode),
+        
+            // Cor de fundo baseada no modo escuro ou claro
+            backgroundColor: isDark ? tDarkColor : Colors.grey.shade200,
+        
+            // Barra de aplicativo
+            appBar: AppBar(
+              // Configurações de cores e aparência baseadas no modo escuro ou claro
+              backgroundColor: isDark ? tDarkColor : whiteColor,
+              foregroundColor: isDark ? Colors.black : whiteColor,
+              elevation: 0,
+              centerTitle: true,
+              automaticallyImplyLeading: false,
+        
+              // Título exibindo informações do usuário
+              title: StreamBuilder<UserModel?>(
+                stream: userController.userStream,
+                builder: (context, snapshot) {
+                  final user = snapshot.data;
+                  // bool isAdmin = user?.isAdmin ?? false;
+                  if (user == null) {
+                    return const Text('Nome de usuário não disponivel');
+                  } else {
+                    // Mostra a imagem e o nome do usuário
+                    return ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.amber.shade400,
+                        radius: 25,
+                        child: Image.asset('assets/images/avatar.png'),
+                      ),
+                      title: Text(
+                        'Olá, Bem-Vindo!',
+                        style: Theme.of(context).textTheme.titleSmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        user.fullName, //# Nome do usuário logado
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    );
+                  }
+                },
+              ),
+        
+              // Ações na barra de aplicativos (calendário e notificações)
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          CupertinoIcons.calendar,
+                          color: isDark ? tWhiteColor : tDarkColor,
                         ),
-                        title: Text(
-                          'Olá, Bem-Vindo!',
-                          style: Theme.of(context).textTheme.titleSmall,
-                          overflow: TextOverflow.ellipsis,
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          CupertinoIcons.bell,
+                          color: isDark ? tWhiteColor : tDarkColor,
                         ),
-                        subtitle: Text(
-                          user.fullName, //# Nome do usuário logado
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      );
-                    }
-                  },
+                      ),
+                    ],
+                  ),
                 ),
-
-                // Ações na barra de aplicativos (calendário e notificações)
-                actions: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
-                    child: Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            CupertinoIcons.calendar,
-                            color: isDark ? tWhiteColor : tDarkColor,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(
-                            CupertinoIcons.bell,
-                            color: isDark ? tWhiteColor : tDarkColor,
-                          ),
-                        ),
-                      ],
+              ],
+            ),
+        
+            // Corpo principal da página
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 28),
+              child: Column(
+                children: [
+                  const Gap(20),
+                  ChamadosPageBodyHeader(formattedDate: formattedDate),
+                  const Gap(20),
+                  Expanded(
+                    child: StreamBuilder<UserModel?>(
+                      stream: userController.userStream,
+                      builder: (context, snapshot) {
+                        final user = snapshot.data;
+                        bool isAdmin = user?.isAdmin ?? false;
+        
+                        // Mostra chamados para admin ou usuário comum
+                        return isAdmin
+                            ? AdminChamadosNew(
+                                widget: widget,
+                              )
+                            : AdminChamadosNew(
+                                widget: widget,
+                                usuarioLogado: user?.id,
+                              );
+                      },
                     ),
                   ),
                 ],
-              ),
-
-              // Corpo principal da página
-              body: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Column(
-                  children: [
-                    const Gap(20),
-                    ChamadosPageBodyHeader(formattedDate: formattedDate),
-                    const Gap(20),
-                    Expanded(
-                      child: StreamBuilder<UserModel?>(
-                        stream: userController.userStream,
-                        builder: (context, snapshot) {
-                          final user = snapshot.data;
-                          bool isAdmin = user?.isAdmin ?? false;
-
-                          // Mostra chamados para admin ou usuário comum
-                          return isAdmin
-                              ? AdminChamadosNew(
-                                  widget: widget,
-                                )
-                              : AdminChamadosNew(
-                                  widget: widget,
-                                  usuarioLogado: user?.id,
-                                );
-                        },
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
           ),

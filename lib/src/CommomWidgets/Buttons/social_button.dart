@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../Constants/colors.dart';
 import 'button_loagind_widget.dart';
 
 // Widget personalizado para um botão de mídia social.
@@ -39,7 +40,7 @@ class SocialButton extends StatelessWidget {
           backgroundColor: background,
           side: BorderSide.none,
         ),
-        // Exibe uma caixa vazia se `isLoading` for verdadeiro, 
+        // Exibe uma caixa vazia se `isLoading` for verdadeiro,
         // caso contrário, exibe a imagem fornecida.
         icon: isLoading
             ? const SizedBox()
@@ -54,10 +55,10 @@ class SocialButton extends StatelessWidget {
             ? const ButtonLoadingWidget()
             : Text(
                 text,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyLarge!
-                    .apply(color: foreground),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                      color: blackColor,
+                      fontWeight: FontWeight.w700,
+                    ),
               ),
       ),
     );

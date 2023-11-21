@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-// import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import '../../../../CommomWidgets/Buttons/primary_button.dart';
+
 import '../../../../Constants/colors.dart';
 import '../../../../Controller/theme_controller.dart';
 import '../../../Authentication/Models/user_model.dart';
@@ -14,33 +13,6 @@ import '../../ChamadosPage/Controller/user_controller.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
-
-  Future<bool> _onWillPop(BuildContext context) async {
-    return await showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: const Text('Você deseja sair?'),
-            content: const Text(
-              'Você realmente deseja sair do aplicativo?',
-            ),
-            actions: [
-              SizedBox(
-                width: 100,
-                child: OutlinedButton(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: const Text("Não"),
-                ),
-              ),
-              MyPrimaryButton(
-                isFullWidth: false,
-                onPressed: () => Navigator.of(context).pop(true),
-                text: "Sim",
-              ),
-            ],
-          ),
-        ) ??
-        false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +27,13 @@ class CategoryScreen extends StatelessWidget {
     final year = currentDate.year;
     String formattedDate = "$day/$month/$year";
 
-    return Obx(() {
-      // Define se o modo escuro está ativado ou não
-      final isDark = themeController.isDarkMode.value;
+    return Obx(
+      () {
+        // Define se o modo escuro está ativado ou não
+        final isDark = themeController.isDarkMode.value;
 
-      // Estrutura principal da página de chamados
-      return WillPopScope(
-        // Função acionada quando tenta-se voltar (pressionando o botão de voltar)
-        onWillPop: () => _onWillPop(context),
-
-        child: SafeArea(
+        // Estrutura principal da página de chamados
+        return SafeArea(
           child: Scaffold(
             // Chave baseada no modo escuro ou claro
             key: ValueKey(Get.isDarkMode),
@@ -76,7 +45,7 @@ class CategoryScreen extends StatelessWidget {
             appBar: AppBar(
               // Configurações de cores e aparência baseadas no modo escuro ou claro
               backgroundColor: isDark ? tDarkColor : whiteColor,
-              foregroundColor: isDark ? Colors.black : whiteColor,
+              foregroundColor: isDark ? blackColor : whiteColor,
               elevation: 0,
               centerTitle: true,
               automaticallyImplyLeading: false,
@@ -128,8 +97,8 @@ class CategoryScreen extends StatelessWidget {
                   CategoryHeader(formattedDate: formattedDate),
                   const Gap(20),
                   Expanded(
-                      child: Scaffold(
-                    body: StreamBuilder(
+                    child: Scaffold(
+                      body: StreamBuilder(
                         stream:
                             FirestoreProvider.getdocumentsStream('categories'),
                         builder:
@@ -160,14 +129,16 @@ class CategoryScreen extends StatelessWidget {
                             itemBuilder: (ctx, i) =>
                                 CategoryTile(snapshot.data?[i] as Category),
                           );
-                        }),
-                  )),
+                        },
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }

@@ -34,83 +34,73 @@ class ForgetPasswordPhoneScreen extends StatelessWidget {
 
     final controller = Get.put(AuthenticationRepository());
 
-    return WillPopScope(
-      // Controla o comportamento do botão voltar.
-      onWillPop: () async {
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-          return false;
-        }
-        return false;
-      },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                size: 30.0,
-                color: isDark ? whiteColor : blackColor,
-              ),
-              onPressed: () {
-                Get.offAll(() => const WelcomeScreen());
-              },
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              size: 30.0,
+              color: isDark ? whiteColor : blackColor,
             ),
+            onPressed: () {
+              Get.offAll(() => const WelcomeScreen());
+            },
           ),
-          body: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const Gap(80),
-                  // Cabeçalho da tela.
-                  FormHeaderWidget(
-                    image: tForgetPasswordImage,
-                    imageColor: isDark ? tPrimaryColor : tSecondaryColor,
-                    title: tForgetPassword,
-                    subTitle: tForgetPhoneSubTitle,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    heightBetween: 30.0,
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(30),
-                  Form(
-                    child: Column(
-                      children: [
-                        // Campo de entrada para o número de telefone.
-                        TextFormField(
-                          controller: phoneNo,
-                          decoration: const InputDecoration(
-                            label: Text(tPhoneNo),
-                            hintText: tPhoneNo,
-                            prefixIcon: Icon(Icons.numbers),
-                          ),
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            phoneFormatter,
-                          ],
-                          keyboardType: TextInputType.phone,
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const Gap(80),
+                // Cabeçalho da tela.
+                FormHeaderWidget(
+                  image: tForgetPasswordImage,
+                  imageColor: isDark ? tPrimaryColor : tSecondaryColor,
+                  title: tForgetPassword,
+                  subTitle: tForgetPhoneSubTitle,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  heightBetween: 30.0,
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(30),
+                Form(
+                  child: Column(
+                    children: [
+                      // Campo de entrada para o número de telefone.
+                      TextFormField(
+                        controller: phoneNo,
+                        decoration: const InputDecoration(
+                          label: Text(tPhoneNo),
+                          hintText: tPhoneNo,
+                          prefixIcon: Icon(Icons.numbers),
                         ),
-                        const Gap(20.0),
-                        // Botão para avançar para a próxima tela.
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              // Chama função de autenticação por telefone.
-                              controller.phoneAuthentication(
-                                phoneNo.text.trim(),
-                              );
-                              Get.to(() => const OTPScreen());
-                            },
-                            child: const Text(tNext),
-                          ),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          phoneFormatter,
+                        ],
+                        keyboardType: TextInputType.phone,
+                      ),
+                      const Gap(20.0),
+                      // Botão para avançar para a próxima tela.
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            // Chama função de autenticação por telefone.
+                            controller.phoneAuthentication(
+                              phoneNo.text.trim(),
+                            );
+                            Get.to(() => const OTPScreen());
+                          },
+                          child: const Text(tNext),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

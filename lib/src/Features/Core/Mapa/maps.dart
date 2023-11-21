@@ -3,17 +3,19 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
+import '../../../Constants/colors.dart';
+import '../../../Controller/theme_controller.dart';
 import '../Category/provider/firestore_provider.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _MapScreenState createState() => _MapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
@@ -34,8 +36,10 @@ class _MapScreenState extends State<MapScreen> {
     try {
       LocationData currentLocation = await location.getLocation();
       setState(() {
-        initialPosition =
-            LatLng(currentLocation.latitude!, currentLocation.longitude!);
+        initialPosition = LatLng(
+          currentLocation.latitude!,
+          currentLocation.longitude!,
+        );
       });
     } catch (e) {
       log('Erro ao obter a localização atual: $e');
@@ -47,130 +51,153 @@ class _MapScreenState extends State<MapScreen> {
     QuerySnapshot<Map<String, dynamic>> snapshot =
         await FirebaseFirestore.instance.collection('Chamados').get();
 
-    setState(() {
-      markers = snapshot.docs.map((DocumentSnapshot<Map<String, dynamic>> doc) {
-        Map<String, dynamic> data = doc.data()!;
-        GeoPoint geoPoint = data["location_report"];
-        double latitude = geoPoint.latitude;
-        double longitude = geoPoint.longitude;
+    setState(
+      () {
+        markers = snapshot.docs.map(
+          (DocumentSnapshot<Map<String, dynamic>> doc) {
+            Map<String, dynamic> data = doc.data()!;
+            GeoPoint geoPoint = data["location_report"];
+            double latitude = geoPoint.latitude;
+            double longitude = geoPoint.longitude;
 
-        return Marker(
-          markerId: MarkerId(doc.id),
-          position: LatLng(latitude, longitude),
-          infoWindow: InfoWindow(
-              title: 'Chamado #${doc.id}',
-              onTap: () {
-                Future<Map<String, dynamic>> chamado =
-                    FirestoreProvider.getDocumentById("Chamados", doc.id);
-
-                chamado.then((dadosDoChamado) {
-                  showDialog(
-                    context: context,
-                    builder: (ctx) => AlertDialog(
-                      title: Text(
-                        '#${doc.id}',
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey[50],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Status: ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                ),
-                                Text('${dadosDoChamado['Status do chamado']}',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge),
-                              ],
-                            ),
-                          ),
-                          const Gap(5),
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey[50],
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Categoria: ',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                ),
-                                Text('${dadosDoChamado['Categoria']}',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge),
-                              ],
-                            ),
-                          ),
-                          const Gap(5),
-                          Container(
-                            padding: const EdgeInsets.all(8.0),
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.blueGrey[50],
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                            child: Text(
-                              'Descrição: ',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ),
-                          Container(
-                              padding: const EdgeInsets.all(8.0),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey[50],
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                ),
-                              ),
-                              child: Expanded(
-                                child: Text(
-                                  '${dadosDoChamado['Descricao']}',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                              )),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(ctx);
-                          },
-                          child: const Text('Fechar'),
-                        ),
-                      ],
-                    ),
+            return Marker(
+              markerId: MarkerId(doc.id),
+              position: LatLng(latitude, longitude),
+              infoWindow: InfoWindow(
+                title: 'Chamado #${doc.id}',
+                onTap: () {
+                  Future<Map<String, dynamic>> chamado =
+                      FirestoreProvider.getDocumentById(
+                    "Chamados",
+                    doc.id,
                   );
-                });
-              }),
-        );
-      }).toList();
-    });
+
+                  chamado.then(
+                    (dadosDoChamado) {
+                      showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: Text(
+                            '#${doc.id}',
+                            style: Theme.of(context).textTheme.displaySmall,
+                          ),
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[50],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Status: ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
+                                    Text(
+                                      '${dadosDoChamado['Status do chamado']}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Gap(5),
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[50],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Categoria: ',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineMedium,
+                                    ),
+                                    Text(
+                                      '${dadosDoChamado['Categoria']}',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Gap(5),
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[50],
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    topRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Descrição: ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  color: Colors.blueGrey[50],
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(10),
+                                    bottomRight: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Expanded(
+                                  child: Text(
+                                    '${dadosDoChamado['Descricao']}',
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pop(ctx);
+                              },
+                              child: const Text('Fechar'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          },
+        ).toList();
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final ThemeController themeController = Get.find();
+    final isDark = themeController.isDarkMode.value;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -182,9 +209,9 @@ class _MapScreenState extends State<MapScreen> {
             onPressed: () {
               loadMarkers();
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.replay_outlined,
-              color: Colors.black,
+              color: isDark ? whiteColor : blackColor,
             ),
             iconSize: 30,
           ),

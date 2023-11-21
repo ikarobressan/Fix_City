@@ -64,76 +64,67 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (Get.isOverlaysOpen) {
-          Get.back();
-          return true;
-        }
-        return false;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Center(
-              child: AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          Center(
+            child: AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            ),
+          ),
+          Positioned(
+            top: 40,
+            left: 10,
+            child: IconButton(
+              iconSize: 35,
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: VideoProgressIndicator(
+              _controller,
+              allowScrubbing: true,
+              padding: const EdgeInsets.all(10),
+              colors: VideoProgressColors(
+                playedColor: Colors.amber,
+                bufferedColor: Colors.amber.withOpacity(0.3),
+                backgroundColor: Colors.white70,
               ),
             ),
-            Positioned(
-              top: 40,
-              left: 10,
-              child: IconButton(
-                iconSize: 35,
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: VideoProgressIndicator(
-                _controller,
-                allowScrubbing: true,
-                padding: const EdgeInsets.all(10),
-                colors: VideoProgressColors(
-                  playedColor: Colors.amber,
-                  bufferedColor: Colors.amber.withOpacity(0.3),
-                  backgroundColor: Colors.white70,
+          ),
+          Align(
+            alignment: Alignment.center,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  iconSize: 50,
+                  icon: const Icon(Icons.replay_10, color: Colors.white),
+                  onPressed: _rewind,
                 ),
-              ),
+                IconButton(
+                  iconSize: 60,
+                  icon: Icon(
+                    _controller.value.isPlaying
+                        ? Icons.pause
+                        : Icons.play_arrow,
+                    color: Colors.white,
+                  ),
+                  onPressed: _playPause,
+                ),
+                IconButton(
+                  iconSize: 50,
+                  icon: const Icon(Icons.forward_10, color: Colors.white),
+                  onPressed: _forward,
+                ),
+              ],
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    iconSize: 50,
-                    icon: const Icon(Icons.replay_10, color: Colors.white),
-                    onPressed: _rewind,
-                  ),
-                  IconButton(
-                    iconSize: 60,
-                    icon: Icon(
-                      _controller.value.isPlaying
-                          ? Icons.pause
-                          : Icons.play_arrow,
-                      color: Colors.white,
-                    ),
-                    onPressed: _playPause,
-                  ),
-                  IconButton(
-                    iconSize: 50,
-                    icon: const Icon(Icons.forward_10, color: Colors.white),
-                    onPressed: _forward,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

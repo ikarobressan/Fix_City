@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../../Constants/colors.dart';
+import '../../Controller/theme_controller.dart';
 import 'button_loagind_widget.dart';
 
 // Widget personalizado para um botão primário.
@@ -28,6 +31,8 @@ class MyPrimaryButton extends StatelessWidget {
   // Constrói a interface visual do botão.
   @override
   Widget build(BuildContext context) {
+    final ThemeController themeController = Get.find();
+    final isDark = themeController.isDarkMode.value;
     return SizedBox(
       // Define a largura com base na propriedade `isFullWidth`.
       width: isFullWidth ? double.infinity : width,
@@ -39,7 +44,12 @@ class MyPrimaryButton extends StatelessWidget {
             ? const ButtonLoadingWidget()
             : Text(
                 text.toUpperCase(),
-                style: const TextStyle(fontSize: 16),
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                      color: isDark ? blackColor : whiteColor,
+                      fontSize: 19,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                    ),
               ),
       ),
     );

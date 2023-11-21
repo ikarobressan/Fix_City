@@ -399,13 +399,12 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
               Column(
                 children: [
                   InputAddress(
-                    address: address,
-                    addressNumber: addressNumber,
-                    cep: cep,
-                    referPoint: referPoint,
-                    longitudeReport: longitudeReport,
-                    latitudeReport: latitudeReport
-                  ),
+                      address: address,
+                      addressNumber: addressNumber,
+                      cep: cep,
+                      referPoint: referPoint,
+                      longitudeReport: longitudeReport,
+                      latitudeReport: latitudeReport,),
                   const Gap(20),
                 ],
               ),
@@ -432,11 +431,21 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                           onPressed: pickImage,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(CupertinoIcons.camera_fill),
-                              Text('Enviar Foto'),
+                              const Icon(CupertinoIcons.camera_fill),
+                              Text(
+                                'Enviar Foto',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(
+                                      color: tPrimaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                              ),
                             ],
                           ),
                         ),
@@ -445,7 +454,6 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       Expanded(
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            // fixedSize: const Size(160, 50),
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
@@ -453,11 +461,24 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                           onPressed: pickVideo,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Icon(CupertinoIcons.videocam_fill),
-                              Text('Enviar Vídeo'),
+                              Icon(
+                                CupertinoIcons.videocam_fill,
+                                color: isDark ? blackColor : whiteColor,
+                              ),
+                              Text(
+                                'Enviar Vídeo',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(
+                                      color: isDark ? blackColor : whiteColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                              ),
                             ],
                           ),
                         ),
@@ -511,7 +532,7 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                               child: VideoPlayer(_videoController),
                             ),
                           ),
-                        )
+                        ),
                     ],
                   ),
                 ],
@@ -532,7 +553,17 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text('Cancelar'),
+                      child: Text(
+                        'Cancelar',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              color: tPrimaryColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                      ),
                     ),
                   ),
                   const Gap(20),
@@ -567,7 +598,17 @@ class _ReportFormScreenState extends State<ReportFormScreen> {
                           Navigator.pop(context);
                         }
                       },
-                      child: const Text('Enviar'),
+                      child: Text(
+                        'Enviar',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium!
+                            .copyWith(
+                              color: isDark ? blackColor : whiteColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                            ),
+                      ),
                     ),
                   ),
                 ],

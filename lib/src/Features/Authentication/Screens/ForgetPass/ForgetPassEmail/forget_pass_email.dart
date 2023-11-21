@@ -32,72 +32,63 @@ class _ForgetPasswordMailScreenState extends State<ForgetPasswordMailScreen> {
     final ThemeController themeController = Get.find();
     final isDark = themeController.isDarkMode.value;
 
-    return WillPopScope(
-      onWillPop: () async {
-        if (Navigator.of(context).canPop()) {
-          Navigator.of(context).pop();
-          return false;
-        }
-        return false;
-      },
-      child: SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back, size: 30.0),
-              onPressed: () {
-                Get.offAll(() => const WelcomeScreen());
-              },
-            ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, size: 30.0),
+            onPressed: () {
+              Get.offAll(() => const WelcomeScreen());
+            },
           ),
-          body: SingleChildScrollView(
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  const Gap(80),
-                  // Cabeçalho da forma
-                  FormHeaderWidget(
-                    image: tForgetPasswordImage,
-                    imageColor: isDark ? tPrimaryColor : tSecondaryColor,
-                    title: tForgetPassword,
-                    subTitle: tForgetMailSubTitle,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    heightBetween: 30.0,
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(30),
-                  // Formulário para inserção do e-mail
-                  Form(
-                    key: controller.resetPassEmailFormKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          controller: emailController,
-                          validator: Helper.validateEmail,
-                          decoration: const InputDecoration(
-                            label: Text(tEmail),
-                            hintText: tEmail,
-                            prefixIcon: Icon(Icons.mail_outline_rounded),
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const Gap(80),
+                // Cabeçalho da forma
+                FormHeaderWidget(
+                  image: tForgetPasswordImage,
+                  imageColor: isDark ? tPrimaryColor : tSecondaryColor,
+                  title: tForgetPassword,
+                  subTitle: tForgetMailSubTitle,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  heightBetween: 30.0,
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(30),
+                // Formulário para inserção do e-mail
+                Form(
+                  key: controller.resetPassEmailFormKey,
+                  child: Column(
+                    children: [
+                      TextFormField(
+                        controller: emailController,
+                        validator: Helper.validateEmail,
+                        decoration: const InputDecoration(
+                          label: Text(tEmail),
+                          hintText: tEmail,
+                          prefixIcon: Icon(Icons.mail_outline_rounded),
+                        ),
+                      ),
+                      const Gap(20),
+                      // Botão de envio
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: sendResetPasswordEmail,
+                          child: Text(
+                            'Enviar',
+                            style: Theme.of(context).textTheme.headlineSmall,
                           ),
                         ),
-                        const Gap(20),
-                        // Botão de envio
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: sendResetPasswordEmail,
-                            child: Text(
-                              'Enviar',
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

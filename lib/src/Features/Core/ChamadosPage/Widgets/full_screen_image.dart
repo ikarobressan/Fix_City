@@ -13,37 +13,28 @@ class FullScreenImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (Navigator.canPop(Get.context!)) {
-          Get.back();
-          return true;
-        }
-        return false;
-      },
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body: Stack(
-          children: [
-            if (imageUrl != null)
-              Center(
-                child: Image.network(imageUrl!),
-              ),
-            if (imagePath != null)
-              Center(
-                child: Image.file(File(imagePath!)),
-              ),
-            Positioned(
-              top: 40,
-              left: 10,
-              child: IconButton(
-                iconSize: 35,
-                icon: const Icon(Icons.arrow_back, color: whiteColor),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          if (imageUrl != null)
+            Center(
+              child: Image.network(imageUrl!),
             ),
-          ],
-        ),
+          if (imagePath != null)
+            Center(
+              child: Image.file(File(imagePath!)),
+            ),
+          Positioned(
+            top: 40,
+            left: 10,
+            child: IconButton(
+              iconSize: 35,
+              icon: const Icon(Icons.arrow_back, color: whiteColor),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ),
+        ],
       ),
     );
   }

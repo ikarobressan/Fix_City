@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import '../../../../../CommomWidgets/Buttons/primary_button.dart';
+import '../../../../../Constants/colors.dart';
 import '../../../../../Constants/text_strings.dart';
 import '../../../../../Utils/Helper/helper_controller.dart';
 import '../../../Controllers/login_controller.dart';
@@ -78,7 +79,13 @@ class LoginFormWidget extends StatelessWidget {
               child: TextButton(
                 onPressed: () =>
                     ForgetPasswordScreen.buildShowModalBottomSheet(context),
-                child: const Text(tForgetPassword),
+                child: Text(
+                  tForgetPassword,
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        color: tFacebookBgColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
               ),
             ),
 

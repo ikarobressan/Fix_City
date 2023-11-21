@@ -72,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
             bool shouldExit = await showExitDialog(context);
             shouldExit ? SystemNavigator.pop() : null;
             // Previne a ação padrão do botão de voltar
-            return false; 
+            return false;
           },
           child: Scaffold(
             appBar: AppBar(
@@ -80,6 +80,7 @@ class ProfileScreen extends StatelessWidget {
               //   onPressed: () => Get.back(),
               //   icon: const Icon(LineAwesomeIcons.angle_left),
               // ),
+              automaticallyImplyLeading: false,
               title: Text(
                 profile,
                 style: Theme.of(context).textTheme.headlineMedium,
