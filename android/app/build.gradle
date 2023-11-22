@@ -15,7 +15,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '4'
+    flutterVersionCode = '3'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.ikaro.fix_city"
+        applicationId "com.ikaro_bressan_bressan.fix_city"
         minSdkVersion 22
         multiDexEnabled true
         targetSdkVersion flutter.targetSdkVersion
