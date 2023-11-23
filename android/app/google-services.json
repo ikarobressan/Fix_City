@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:151445648706:android:818ee3b593dc8a8eee04db",
         "android_client_info": {
-          "package_name": "com.ikaro.fix_city"
+          "package_name": "com.ikaro_bressan_bressan.fix_city"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "151445648706-9pcqr22nf1rv3rsulfnq9hp3je698qlo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.ikaro.fix_city",
+            "package_name": "com.ikaro_bressan_bressan.fix_city",
             "certificate_hash": "935a3e0b0f13fb2d98aab753131cffddbb1498e9"
           }
         },

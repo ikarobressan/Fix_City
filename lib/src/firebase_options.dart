@@ -63,8 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '151445648706',
     projectId: 'safe-city-c98f2',
     storageBucket: 'safe-city-c98f2.appspot.com',
-    androidClientId: '151445648706-d5jatk1cm8jjpg52dc8cc3k6hk3lived.apps.googleusercontent.com',
-    iosClientId: '151445648706-d2oepmhb9b7gvr9fil21u3e48fg4kn6k.apps.googleusercontent.com',
-    iosBundleId: 'com.ikaro.FixCity',
+    androidClientId:
+        '151445648706-d5jatk1cm8jjpg52dc8cc3k6hk3lived.apps.googleusercontent.com',
+    iosClientId:
+        '151445648706-d2oepmhb9b7gvr9fil21u3e48fg4kn6k.apps.googleusercontent.com',
+    iosBundleId: 'com.ikaro_bressan.FixCity',
   );
 }
