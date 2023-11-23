@@ -125,11 +125,13 @@ class _MapScreenState extends State<MapScreen> {
                                           .textTheme
                                           .headlineMedium,
                                     ),
-                                    Text(
-                                      '${dadosDoChamado['Categoria']}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
+                                    Expanded(
+                                      child: Text(
+                                        '${dadosDoChamado['Categoria']}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
                                     ),
                                   ],
                                 ),
