@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:easy_stepper/easy_stepper.dart';
+import '../../Category/provider/firestore_provider.dart';
 import 'observation_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -38,6 +39,9 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
 
     // Chamar o método para obter as URLs das imagens quando a tela é inicializada
     _loadImages();
+
+    // mudar o param "ready" para true em todos os comentarios do admin
+    readyComments();
   }
 
   void _loadImages() async {
@@ -53,6 +57,19 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
     log('Videos recuperados: $videoUrls');
     // Atualizar o estado para refletir as mudanças
     setState(() {});
+  }
+
+  void readyComments() {
+    List<dynamic> listaAtualizada =
+        widget.reportingModel.observationsAdmin.map((item) {
+      // Modifique o campo 'name' em cada dicionário
+      item['ready'] = true;
+      return item;
+    }).toList();
+
+    FirestoreProvider.putDocument(
+        "Chamados", {"observations_admin": listaAtualizada},
+        documentId: widget.reportingModel.chamadoId);
   }
 
   Future<bool> safeBack() async {
@@ -482,17 +499,17 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                   ),
                 ],
               ),
-              listObs[0].isNotEmpty ?
-                Column(
-                  children: List.generate(
-                    listObs.length,
-                    (index) => StepWidget(
-                        obs: listObs[index]["observation"],
-                        data: listObs[index]["data"],
-                        status: listObs[index]["status"]),
-                  ),
-                )
-                : const Text("Sem observações")
+              listObs[0].length != 1
+                  ? Column(
+                      children: List.generate(
+                        listObs.length,
+                        (index) => StepWidget(
+                            obs: listObs[index]["observation"],
+                            data: listObs[index]["data"],
+                            status: listObs[index]["status"]),
+                      ),
+                    )
+                  : const Text("Sem observações")
             ],
           ),
         ),
