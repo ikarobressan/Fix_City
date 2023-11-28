@@ -21,23 +21,23 @@ class ImageWithIcon extends StatelessWidget {
             child: const Image(image: AssetImage(avatarImage)),
           ),
         ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          child: Container(
-            width: 35,
-            height: 35,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(100),
-              color: tPrimaryColor,
-            ),
-            child: const Icon(
-              LineAwesomeIcons.alternate_pencil,
-              color: Colors.black,
-              size: 20,
-            ),
-          ),
-        ),
+        // Positioned(
+        //   bottom: 0,
+        //   right: 0,
+        //   child: Container(
+        //     width: 35,
+        //     height: 35,
+        //     decoration: BoxDecoration(
+        //       borderRadius: BorderRadius.circular(100),
+        //       color: tPrimaryColor,
+        //     ),
+        //     child: const Icon(
+        //       LineAwesomeIcons.alternate_pencil,
+        //       color: Colors.black,
+        //       size: 20,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }

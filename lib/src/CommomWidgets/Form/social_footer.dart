@@ -66,36 +66,36 @@ class SocialFooter extends StatelessWidget {
 
           const Gap(10),
           // Botão de login com Facebook.
-          Obx(
-            () => SocialButton(
-              // Logo do Facebook.
-              image: facebookLogo,
-              // Cor do texto do botão do Facebook.
-              foreground: tWhiteColor,
-              // Cor de fundo do botão do Facebook.
-              background: tFacebookBgColor,
-              // Texto do botão do Facebook.
-              text: '${tConnectWith.tr} ${tFacebook.tr}',
-              // Se verdadeiro, mostra um indicador de carregamento.
-              isLoading: controller.isFacebookLoading.value,
-              // Verifica se o login do Google ou qualquer outra operação de carregamento está em andamento.
-              onPressed: controller.isGoogleLoading.value ||
-                      controller.isLoading.value
-                  ?
-                  // Se o login do Google ou outra operação estiver carregando, desativa a ação do botão.
-                  () {}
-                  :
-                  // Caso contrário, verifica se o login do Facebook está em andamento.
-                  controller.isFacebookLoading.value
-                      ?
-                      // Se o login do Facebook estiver carregando, desativa a ação do botão.
-                      () {}
-                      :
-                      // Se nenhum carregamento estiver em andamento, inicia o processo de login do Facebook.
-                      () => controller.facebookSignIn(),
-            ),
-          ),
-          const Gap(20),
+          // Obx(
+          //   () => SocialButton(
+          //     // Logo do Facebook.
+          //     image: facebookLogo,
+          //     // Cor do texto do botão do Facebook.
+          //     foreground: tWhiteColor,
+          //     // Cor de fundo do botão do Facebook.
+          //     background: tFacebookBgColor,
+          //     // Texto do botão do Facebook.
+          //     text: '${tConnectWith.tr} ${tFacebook.tr}',
+          //     // Se verdadeiro, mostra um indicador de carregamento.
+          //     isLoading: controller.isFacebookLoading.value,
+          //     // Verifica se o login do Google ou qualquer outra operação de carregamento está em andamento.
+          //     onPressed: controller.isGoogleLoading.value ||
+          //             controller.isLoading.value
+          //         ?
+          //         // Se o login do Google ou outra operação estiver carregando, desativa a ação do botão.
+          //         () {}
+          //         :
+          //         // Caso contrário, verifica se o login do Facebook está em andamento.
+          //         controller.isFacebookLoading.value
+          //             ?
+          //             // Se o login do Facebook estiver carregando, desativa a ação do botão.
+          //             () {}
+          //             :
+          //             // Se nenhum carregamento estiver em andamento, inicia o processo de login do Facebook.
+          //             () => controller.facebookSignIn(),
+          //   ),
+          // ),
+          // const Gap(20),
           // Texto clicável para direcionar o usuário a outra página (como cadastro).
           ClickableRichTextWidget(
             text1: text1.tr,

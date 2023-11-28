@@ -24,7 +24,8 @@ class SearchHandler {
       final filteredReports = reports.where((report) {
         return report.category!.toLowerCase().contains(query.toLowerCase()) ||
         report.description!.toLowerCase().contains(query.toLowerCase()) ||
-        report.statusMessage!.toLowerCase().contains(query.toLowerCase());
+        report.statusMessage!.toLowerCase().contains(query.toLowerCase()) ||
+        report.chamadoId!.toLowerCase().contains(query.toLowerCase());
       }).toList();
 
       // Retorna os relatórios filtrados

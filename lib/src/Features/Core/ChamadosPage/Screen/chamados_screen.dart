@@ -132,29 +132,29 @@ class _ChamadosScreenState extends State<ChamadosScreen> {
               ),
         
               // Ações na barra de aplicativos (calendário e notificações)
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          CupertinoIcons.calendar,
-                          color: isDark ? tWhiteColor : tDarkColor,
-                        ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          CupertinoIcons.bell,
-                          color: isDark ? tWhiteColor : tDarkColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              // actions: [
+              //   Padding(
+              //     padding: const EdgeInsets.symmetric(horizontal: 10),
+              //     child: Row(
+              //       children: [
+              //         IconButton(
+              //           onPressed: () {},
+              //           icon: Icon(
+              //             CupertinoIcons.calendar,
+              //             color: isDark ? tWhiteColor : tDarkColor,
+              //           ),
+              //         ),
+              //         IconButton(
+              //           onPressed: () {},
+              //           icon: Icon(
+              //             CupertinoIcons.bell,
+              //             color: isDark ? tWhiteColor : tDarkColor,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //   ),
+              // ],
             ),
         
             // Corpo principal da página

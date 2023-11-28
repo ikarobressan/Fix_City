@@ -67,9 +67,15 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
       return item;
     }).toList();
 
+    if(listaAtualizada[0].length == 1 && listaAtualizada.length > 1){
+      listaAtualizada.removeAt(0);
+    }
+
     FirestoreProvider.putDocument(
-        "Chamados", {"observations_admin": listaAtualizada},
-        documentId: widget.reportingModel.chamadoId);
+      "Chamados",
+      {"observations_admin": listaAtualizada},
+      documentId: widget.reportingModel.chamadoId,
+    );
   }
 
   Future<bool> safeBack() async {
@@ -84,6 +90,10 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
   @override
   Widget build(BuildContext context) {
     List<dynamic> listObs = widget.reportingModel.observationsAdmin as List;
+    
+    if(listObs[0].length == 1 && listObs.length > 1){
+      listObs.removeAt(0);
+    }
 
     final ThemeController themeController = Get.find();
     List<String> statusMessageList = [
@@ -448,8 +458,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                                     height: 300,
                                     // Largura da imagem
                                     width: 150,
-                                    errorBuilder:
-                                        (context, error, stackTrace) {
+                                    errorBuilder: (context, error, stackTrace) {
                                       return Center(
                                         child: Text(
                                           'Erro ao carregar a imagem.',
