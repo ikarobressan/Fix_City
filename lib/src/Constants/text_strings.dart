@@ -33,17 +33,17 @@ const String tAccountCreateVerifyEmail = "Conta criada, verique seu e-mail";
 
 //* -- Welcome Screen Text
 const String tWelcomeTitle =
-    "Bem vindo ao aplicativo\nFix City, entre ou \ncadastre-se e ajude \na sua cidade.";
+    "Bem vindo ao aplicativo\nFix City, entre ou \ncadastre-se e ajude \nna gestão dos seus incidentes.";
 
 //* -- Sing Up Screen Text
-const String tSignUpTitle = "Junte-se a nós e faça a diferença na sua cidade.";
+const String tSignUpTitle = "Faça a diferença na gestão dos seus incidentes!";
 const String tSignUpSubTitle = "Cadastre-se agora!";
 const String tAlreadyHaveAnAccount = 'Já possui uma conta? ';
 
 //* -- Login Screen Texts
-const String tLoginTitle = "Bem-Vindo de volta,";
+const String tLoginTitle = "Bem-Vindo de volta!";
 const String tLoginSubTitle =
-    "Continue contribuindo com \na segurança da sua comunidade.";
+    "Continue contribuindo com a \ngestão dos seus incidentes.";
 const String tRememberMe = "Lembrar-me?";
 const String tDontHaveAnAccount = "Ainda não possui uma conta? ";
 const String tResetPassword = "Mudar senha";

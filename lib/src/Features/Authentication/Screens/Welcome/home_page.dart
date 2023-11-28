@@ -51,35 +51,47 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: Column(
-                  // Centraliza os elementos na tela.
+                  // // Centraliza os elementos na tela.
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Column(
                       children: [
                         // Texto de boas-vindas.
+                        // Text(
+                        //   tWelcomeTitle,
+                        //   style: Theme.of(context).textTheme.displayLarge,
+                        // ),
                         Text(
-                          tWelcomeTitle,
-                          style: Theme.of(context).textTheme.displayLarge,
+                          "Bem-vindo ao aplicativo Fix City!",
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                        const Gap(15),
+                        // Exibe o subtítulo.
+                        Text(
+                          "Faça a diferença na gestão dos seus incidentes",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        Text(
+                          "Entre ou realize o seu cadastro",
+                          textAlign: TextAlign.left,
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       ],
                     ),
-                    const Gap(50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         // Botão de login.
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () =>
-                                Get.to(() => const LoginScreen()),
+                            onPressed: () => Get.to(() => const LoginScreen()),
                             child: Text(
                               tLogin.toUpperCase(),
                               style: Theme.of(context)
                                   .textTheme
                                   .headlineMedium!
                                   .copyWith(
-                                    color:
-                                        isDark ? blackColor : tPrimaryColor,
+                                    color: isDark ? blackColor : tPrimaryColor,
                                     fontSize: 18,
                                     fontWeight: FontWeight.w800,
                                     letterSpacing: 0.5,
@@ -91,8 +103,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         // Botão de inscrição.
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () =>
-                                Get.to(() => const SignupScreen()),
+                            onPressed: () => Get.to(() => const SignupScreen()),
                             child: Text(
                               tSignup.toUpperCase(),
                               style: Theme.of(context)

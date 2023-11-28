@@ -43,15 +43,23 @@ class FormHeaderWidget extends StatelessWidget {
     // Obtem as dimensões da tela.
     final size = MediaQuery.of(context).size;
 
+    var mediaQuery = MediaQuery.of(context);
+    var width = mediaQuery.size.width;
+    var height = mediaQuery.size.height;
+
     return Column(
       crossAxisAlignment: crossAxisAlignment,
       children: [
         // Exibe a imagem no cabeçalho.
-        Image(
-          image: AssetImage(image),
-          color: imageColor,
-          height: size.height * imageHeight,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: Image(
+            image: AssetImage(image),
+            color: imageColor,
+            height: size.height * imageHeight,
+          ),
         ),
+
         // Adiciona um espaço vertical entre a imagem e o título.
         SizedBox(height: heightBetween),
         // Exibe o título.
