@@ -43,10 +43,6 @@ class FormHeaderWidget extends StatelessWidget {
     // Obtem as dimensões da tela.
     final size = MediaQuery.of(context).size;
 
-    var mediaQuery = MediaQuery.of(context);
-    var width = mediaQuery.size.width;
-    var height = mediaQuery.size.height;
-
     return Column(
       crossAxisAlignment: crossAxisAlignment,
       children: [
