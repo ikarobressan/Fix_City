@@ -68,11 +68,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         const Gap(15),
                         // Exibe o subtítulo.
                         Text(
-                          "Faça a diferença na gestão dos seus incidentes",
+                          "Faça a diferença na gestão dos seus incidentes!",
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         Text(
-                          "Entre ou realize o seu cadastro",
+                          "Entre ou realize o seu cadastro.",
                           textAlign: TextAlign.left,
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
